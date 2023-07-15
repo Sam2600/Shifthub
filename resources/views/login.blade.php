@@ -13,7 +13,7 @@
 
                 {{-- If login error occur, show this error message --}}
                 @if (Session::has('login-error'))
-                    <div class="alert alert-danger alert-dismissible col-md-10 offset-md-1 fade show" role="alert">
+                    <div class="alert alert-danger text-center alert-dismissible col-md-10 offset-md-1 fade show" role="alert">
                         {{ Session::get('login-error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -21,7 +21,7 @@
 
                 {{-- if user try to go other route without login --}}
                 @if (Session::has('auth'))
-                    <div class="alert alert-warning alert-dismissible col-md-10 offset-md-1 fade show" role="alert">
+                    <div class="alert alert-warning text-center alert-dismissible col-md-10 offset-md-1 fade show" role="alert">
                         {{ Session::get('auth') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -39,7 +39,7 @@
                         <div class="input-group">
                             <input type="text"
                                 class=" shadow form-control @if ($errors->has('id')) is-invalid @endif"
-                                id="employee_id" name="id" value="{{ old('id') }}">
+                                id="employee_id" name="id" value="{{ old("id") }}">
                         </div>
                         @error('id')
                             <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('id') }}</div>
@@ -53,7 +53,7 @@
                         <div class="input-group">
                             <input type="password"
                                 class="shadow form-control @if ($errors->has('password')) is-invalid @endif"
-                                id="password" name="password" value="{{ old('password') }}">
+                                id="password" name="password" value="{{ old("password") }}">
                             <button type="button" id="toggle-password" class="btn shadow btn-dark"><i
                                     class="far fa-eye"></i></button>
                         </div>
@@ -63,14 +63,14 @@
                     </div>
                     <div>
                         <button type="submit" name="submit"
-                            class="btn col-md-10 offset-md-1 my-3 mb-4 shadow active login" role="button"
+                            class="btn col-md-10 offset-md-1 my-3 shadow active login" role="button"
                             aria-pressed="true">Login</button>
                     </div>
                 </form>
 
             </div>
 
-            <div class="col-md-6 my-5">
+            <div class="col-md-5 mb-5 ms-3 my-4 shadow-lg">
                 <div class="image-container"></div>
             </div>
         </div>
@@ -80,7 +80,7 @@
 
     <style>
         .image-container {
-            background-image: url('{{ Storage::url('signin-image.jpg') }}');
+            background-image: url("https://rb.gy/fl73n");
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;

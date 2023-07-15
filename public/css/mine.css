@@ -2,22 +2,10 @@ body {
     background: #e8ebe8;
 }
 
-
-/* .inf-content{
-    border:1px solid #DDDDDD;
-    -webkit-border-radius:10px;
-    -moz-border-radius:10px;
-    border-radius:10px;
-    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
-} */
-
-.hidee{
-    display: none
-}
-
 span,
 label {
     display: inline;
+    font-weight: 600;
 }
 
 .inline-buttons {
@@ -26,7 +14,7 @@ label {
 
 .inline-form {
     display: inline;
-    margin-left: 5px; / Add margin as needed /
+    margin-left: 5px;
 }
 
 tr:hover {
@@ -68,28 +56,17 @@ img {
     text-align: center;
 }
 
-Styling for the file input label / .file-input-label {
-    display: block;
-    margin-top: 50px;
-}
-
-Hide the actual file input / .file-input input[type="file"] {
-    position: relative;
-    left: -9999px;
-}
-
 #preview {
     margin-top: 20px;
     margin-bottom: 20px;
     width: 140px;
     height: 130px;
     position: relative;
-    left: 185px;
     top: -5px;
 }
 
 .modal.fade .modal-dialog {
-    transition-duration: 0.5s; / Adjust the duration as needed /
+    transition-duration: 0.5s;
 }
 
 .nav {
@@ -121,12 +98,12 @@ Hide the actual file input / .file-input input[type="file"] {
 }
 
 .dropdown-menu {
-    font-size: 14px; / Adjust the font size to your preference /
+    font-size: 14px;
 }
 
 .dropdown-divider {
-    margin-top: 0.05rem; / Adjust the spacing between the options /
-    margin-bottom: 0.05rem; / Adjust the spacing between the options /
+    margin-top: 0.05rem;
+    margin-bottom: 0.05rem;
 }
 
 .document:hover {
@@ -218,10 +195,6 @@ Hide the actual file input / .file-input input[type="file"] {
     color: white;
 }
 
-label {
-    font-weight: 600;
-}
-
 .nav-link:hover {
     text-decoration: underline;
 }
@@ -230,7 +203,6 @@ label {
     text-decoration: underline;
 }
 
-
 .lang_button:focus {
     outline: none;
-  }
+}

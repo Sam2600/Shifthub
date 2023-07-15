@@ -3,69 +3,68 @@
 @section('title', 'Employees Index')
 
 @section('content')
+
     <div>
         <h4 class="text-dark my-4 me-auto"><i class="material-icons groups">groups</i>{{ __('messages.indexEmployees') }}</h4>
         <!-- Message alerts -->
-        <div class="row">
-            <div class="col-md-12">
+        <div class="messageContainer">
 
-                @if (Session::has('loginMessage'))
-                    <div class="alert alert-success alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('loginMessage') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('loginMessage'))
+                <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('loginMessage') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('wrongAdmin'))
-                    <div class="alert alert-warning alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('wrongAdmin') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('wrongAdmin'))
+                <div class="alert alert-warning text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('wrongAdmin') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('noProject'))
-                    <div class="alert alert-warning alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('noProject') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('noProject'))
+                <div class="alert alert-warning text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('noProject') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('noEmployeeMessage'))
-                    <div class="alert alert-warning alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('noEmployeeMessage') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('noEmployeeMessage'))
+                <div class="alert alert-warning text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('noEmployeeMessage') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('deleteMessage'))
-                    <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('deleteMessage') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('deleteMessage'))
+                <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('deleteMessage') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('NoProjects'))
-                    <div class="alert alert-warning text-center alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('NoProjects') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('NoProjects'))
+                <div class="alert alert-warning text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('NoProjects') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('storeMessage'))
-                    <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('storeMessage') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('storeMessage'))
+                <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('storeMessage') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                @if (Session::has('updateMessage'))
-                    <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
-                        {{ Session::get('updateMessage') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+            @if (Session::has('updateMessage'))
+                <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
+                    {{ Session::get('updateMessage') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-            </div>
         </div>
 
         <!-- Employee table -->

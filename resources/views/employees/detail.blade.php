@@ -133,7 +133,6 @@
                                                     @if (in_array(1, $languages))
                                                         English
                                                     @endif
-                                                    ,
                                                     @if (in_array(2, $languages))
                                                         Japan
                                                     @endif
@@ -182,22 +181,22 @@
                                                 </td>
                                                 <td class="text-primary">
                                                     @if (in_array(1, $progs))
-                                                        Java,
+                                                        Java
                                                     @endif
                                                     @if (in_array(2, $progs))
-                                                        C++,
+                                                        C++
                                                     @endif
                                                     @if (in_array(3, $progs))
-                                                        PHP,
+                                                        PHP
                                                     @endif
                                                     @if (in_array(4, $progs))
-                                                        React,
+                                                        React
                                                     @endif
                                                     @if (in_array(5, $progs))
-                                                        Laravel,
+                                                        Laravel
                                                     @endif
                                                     @if (in_array(6, $progs))
-                                                        Android,
+                                                        Android
                                                     @endif
                                                 </td>
                                             </tr>
