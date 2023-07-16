@@ -34,7 +34,7 @@ class EmployeeController extends Controller
      * @return Illuminate\View\View => A view to the employees index page
      */
     public function index()
-    {  
+    {
         // Making the current page number
         $page = request()->input('page') ? request()->input('page') : 1;
 
@@ -80,7 +80,10 @@ class EmployeeController extends Controller
 
                     $page = $page - 1;
 
-                    return redirect()->route('employees.index', ["employee_id" => $employee_id, "career" => $career, "level" => $level, "page" => $page]);
+                    $id = Session::get('emp_id');
+                    Session::forget('emp_id');
+
+                    return redirect()->route('employees.index', ["employee_id" => $employee_id, "career" => $career, "level" => $level, "page" => $page])->with('deleteMessage', "Employee id $id is removed.");
                 }
 
                 return view('employees.index', [
@@ -96,7 +99,10 @@ class EmployeeController extends Controller
 
                 $page = $page - 1;
 
-                return redirect()->route('employees.index', ["page" => $page]);
+                $id = Session::get('emp_id');
+                Session::forget('emp_id');
+
+                return redirect()->route('employees.index', ["page" => $page])->with('deleteMessage', "Employee id $id is removed.");
             }
 
             return view('employees.index', [
@@ -106,7 +112,6 @@ class EmployeeController extends Controller
                 "levels" => $uniqueLevels,
                 "total" => $total,
             ]);
-
         }
 
         if ($employees) { // check if the result is empty or not by checking boolean data
@@ -163,8 +168,6 @@ class EmployeeController extends Controller
 
         $id = $id + 1;
         $employee_id = $counts . $id; // now we get the auto generate employee_id and we carry it to the view
-
-        // dd($page);
 
         return view(
             'employees.create',
@@ -313,7 +316,7 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-
+        session()->put('emp_id', $id);
         // get the employee's data with the param $id
         $employee = $this->employeeInterface->getEmployeeById($id);
 
