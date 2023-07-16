@@ -134,7 +134,6 @@
 
                 <div>
                     <button type="submit" id="saveButton" class="btn save shadow my-3">
-                        {{-- <i id="spinner" class="loading-icon fa fa-spinner fa-spin hidee"></i> --}}
                         <span class="btn-txt">{{ __('messages.projectShowSaveButton') }}</span>
                     </button>
                     <a class="btn resetDisable reset ms-3 shadow my-3"
@@ -264,7 +263,6 @@
                 var selectedProject = $("#selectProjectLists").val();
                 var selectedRemoveProject = $("#removeProjectLists").val();
 
-
                 $.ajax({
 
                     type: "GET",
@@ -291,20 +289,6 @@
                         }
 
                         // This process is creating the default option tag
-                        //    var newOption = $('<option>');
-                        //     newOption.val("");
-                        //     newOption.text("Employee Id");
-                        //     $("#selectEmployeeLists").append(newOption);
-
-                        // This process is looping and creating select options with the data we get from fetchAllData method
-                        $.each(response.employees, function(key, values) {
-                            var newOption = $('<option>');
-                            newOption.val(values.employee_id);
-                            newOption.text(values.employee_id);
-                            $("#selectEmployeeLists").append(newOption);
-                        });
-
-                        // This process is creating the default option tag
                         var projectOption = $('<option>');
                         projectOption.val("");
                         projectOption.text("Projects");
@@ -326,6 +310,7 @@
                         removeProjectOption.text("Projects");
                         $("#removeProjectLists").append(removeProjectOption);
 
+
                         // This process is looping and creating select options with the data we get from fetchAllData method
                         $.each(response.projects, function(key, values) {
                             var removeProjectOption = $('<option>');
@@ -343,6 +328,7 @@
                     }
                 });
             }
+
 
             // This process is to make the dynamic name input's value after changing the employee_id select option
             $(document).on("change", "#selectEmployeeLists", function() {
@@ -396,7 +382,7 @@
 
                             $("#error_messages").html("")
                             $("#error_messages").addClass(
-                                "alert alert-danger text-center alert-dismissible fade show"
+                                "alert alert-danger col-md-8 text-center alert-dismissible fade show"
                             )
 
                             $.each(response.message, function(key, value) {
@@ -410,14 +396,14 @@
 
                             $("#projectAdded").html("").removeClass().removeAttr('style');
                             $("#projectAdded").addClass(
-                                "alert alert-success text-center alert-dismissible fade show"
+                                "alert alert-success col-md-8 text-center alert-dismissible fade show"
                             )
                             $("#projectAdded").text(response.message)
 
                             $("#projectAssignModal").modal("hide")
                             $("#projectAssignModal").find("input").val("")
 
-                            $("#projectAdded").fadeOut(5000)
+                            $("#projectAdded").fadeOut(7500)
 
                             fetchAllData();
 
@@ -427,7 +413,7 @@
 
                             $("#projectAddedFailed").html("").removeClass().removeAttr('style');
                             $("#projectAddedFailed").addClass(
-                                "alert alert-warning text-center alert-dismissible fade show"
+                                "alert alert-warning col-md-8 text-center alert-dismissible fade show"
                             )
 
                             $("#projectAddedFailed").text(response.message)
@@ -435,7 +421,7 @@
                             $("#projectAssignModal").modal("hide")
                             $("#projectAssignModal").find("input").val("")
 
-                            $("#projectAddedFailed").fadeOut(5000)
+                            $("#projectAddedFailed").fadeOut(7500)
 
                             fetchAllData();
 
@@ -490,7 +476,7 @@
 
                             $("#projectRemoved").html("").removeClass().removeAttr('style');
                             $("#projectRemoved").addClass(
-                                "alert alert-success text-center alert-dismissible fade show"
+                                "alert alert-success col-md-8 text-center alert-dismissible fade show"
                             )
 
                             $("#projectRemoved").text(response.message)
@@ -498,7 +484,9 @@
                             $("#projectRemoveModal").modal("hide")
                             $("#projectRemoveModal").find("input").val("")
 
-                            $("#projectRemoved").fadeOut(5000)
+                            $("#projectRemoved").fadeOut(7500)
+
+                            $("#selectProjectLists").val(null)
 
                             fetchAllData();
 
@@ -509,7 +497,7 @@
                             $("#projectRemovedFailed").html("").removeClass().removeAttr(
                                 'style');
                             $("#projectRemovedFailed").addClass(
-                                "alert alert-warning text-center alert-dismissible fade show"
+                                "alert alert-warning col-md-8 text-center alert-dismissible fade show"
                             )
 
                             $("#projectRemovedFailed").text(response.message)
@@ -517,7 +505,7 @@
                             $("#projectRemoveModal").modal("hide")
                             $("#projectRemoveModal").find("input").val("")
 
-                            $("#projectRemovedFailed").fadeOut(5000)
+                            $("#projectRemovedFailed").fadeOut(7500)
 
                             fetchAllData();
 
@@ -527,6 +515,7 @@
             });
 
 
+            // form submit for employee-assign
             $(document).on("submit", "#register-form", function(e) {
 
                 e.preventDefault();
@@ -561,13 +550,13 @@
 
                             $("#failMessageDiv").html("").removeClass().removeAttr('style');
                             $("#failMessageDiv").addClass(
-                                'alert alert-danger text-center alert-dismissible fade show'
+                                'alert alert-danger col-md-8 text-center alert-dismissible fade show'
                             )
                             $("#failMessageDiv").text(response.message);
 
                             clearErrorMessages();
 
-                            $("#failMessageDiv").fadeOut(5000)
+                            $("#failMessageDiv").fadeOut(7500)
 
                         }
 
@@ -575,13 +564,16 @@
 
                             $("#successMessageDiv").html("").removeClass().removeAttr('style');
                             $("#successMessageDiv").addClass(
-                                'alert alert-success text-center alert-dismissible fade show'
+                                'alert alert-success col-md-8 text-center alert-dismissible fade show'
                             )
                             $("#successMessageDiv").text(response.message);
 
+                            $("#register-form").find("input").val("")
+                            $("#selectProjectLists").val(null)
+
                             clearErrorMessages();
 
-                            $("#successMessageDiv").fadeOut(5000)
+                            $("#successMessageDiv").fadeOut(7500)
 
                         }
 
@@ -589,26 +581,26 @@
 
                             $("#failMessageDiv").html("").removeClass().removeAttr('style');
                             $("#failMessageDiv").addClass(
-                                'alert alert-danger text-center alert-dismissible fade show'
+                                'alert alert-danger col-md-8 text-center alert-dismissible fade show'
                             )
                             $("#failMessageDiv").text(response.message);
 
                             clearErrorMessages();
 
-                            $("#failMessageDiv").fadeOut(5000)
+                            $("#failMessageDiv").fadeOut(7500)
                         }
 
                         if (response.status == 4) {
 
                             $("#failMessageDiv").html("").removeClass().removeAttr('style');
                             $("#failMessageDiv").addClass(
-                                'alert alert-danger text-center alert-dismissible fade show'
+                                'alert alert-danger col-md-8 text-center alert-dismissible fade show'
                             )
                             $("#failMessageDiv").text(response.message);
 
                             clearErrorMessages();
 
-                            $("#failMessageDiv").fadeOut(5000)
+                            $("#failMessageDiv").fadeOut(7500)
                         }
                     },
 
