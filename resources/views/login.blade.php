@@ -70,7 +70,7 @@
 
             </div>
 
-            <div class="col-md-5 mb-5 ms-3 my-4 shadow-lg">
+            <div class="col-md-5 parent mb-5 ms-3 my-4 shadow-lg">
                 <div class="image-container"></div>
             </div>
         </div>
@@ -79,8 +79,9 @@
 
 
     <style>
+
         .image-container {
-            background-image: url("https://rb.gy/fl73n");
+            background-image: url("https://i.pinimg.com/564x/30/56/59/305659e22811c323682f23c2734a8534.jpg");
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;

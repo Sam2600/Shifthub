@@ -24,10 +24,10 @@
             @endif
 
             <div class="col-md-6">
-                <img id="preview" src="{{ Storage::url('employees/photos/' . $employee->photo) }}" alt="Preview">
+                <img class="img-account-profile rounded-circle mb-2" id="preview" src="{{ Storage::url('employees/photos/' . $employee->photo) }}" alt="Preview">
             </div>
 
-            <form class="row g-3" action="{{ route('employees.update', $employee->id) }}" method="POST"
+            <form class="row g-5" action="{{ route('employees.update', $employee->id) }}" method="POST"
                 enctype="multipart/form-data">
 
                 @csrf
@@ -37,7 +37,7 @@
                     <label id="photolabel" for="photo"
                         class="form-label d-inline-block">{{ __('messages.CreatePhoto') }}<span
                             class="required">*</span></label>
-                    <input type="file" class="form-control my-2 mb-3 @if ($errors->has('photo')) is-invalid @endif"
+                    <input type="file" class="form-control @if ($errors->has('photo')) is-invalid @endif"
                         id="photo" value="{{ Storage::url($employee->photo) }}" name="photo">
 
                     @error('photo')
@@ -50,7 +50,7 @@
                 <div class="col-md-5">
                     <label for="id" class="form-label">{{ __('messages.CreateId') }}<span
                             class="required">*</span></label>
-                    <input type="text" class="form-control my-2 mb-3 @if ($errors->has('id')) is-invalid @endif"
+                    <input type="text" class="form-control @if ($errors->has('id')) is-invalid @endif"
                         id="id" name="id" value="{{ $employee->employee_id }}" disabled>
                     @error('id')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('id') }}</div>
@@ -62,7 +62,7 @@
                     <label for="name" class="form-label">{{ __('messages.CreateName') }}<span
                             class="required">*</span></label>
 
-                    <input type="text" class="form-control my-2 mb-3 @if ($errors->has('name')) is-invalid @endif"
+                    <input type="text" class="form-control @if ($errors->has('name')) is-invalid @endif"
                         id="name" maxlength="25" name="name" value="{{ old('name', $employee->name) }}">
                     @error('name')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('name') }}</div>
@@ -72,7 +72,7 @@
                 <div class="col-md-5">
                     <label for="email" class="form-label">{{ __('messages.CreateEmail') }}<span
                             class="required">*</span></label>
-                    <input type="email" class="form-control my-2 mb-3 @if ($errors->has('email')) is-invalid @endif"
+                    <input type="email" class="form-control @if ($errors->has('email')) is-invalid @endif"
                         id="email" maxlength="40" name="email" value="{{ old('email', $employee->email) }}">
                     @error('email')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('email') }}</div>
@@ -82,7 +82,7 @@
                 <div class="col-md-5">
                     <label for="phone" class="form-label">{{ __('messages.CreatePhone') }}<span
                             class="required">*</span></label>
-                    <input type="text" class="form-control my-2 mb-3 @if ($errors->has('phone')) is-invalid @endif"
+                    <input type="text" class="form-control @if ($errors->has('phone')) is-invalid @endif"
                         id="phone" maxlength="14" name="phone" value="{{ old('phone', $employee->phone) }}">
                     @error('phone')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('phone') }}</div>
@@ -92,7 +92,7 @@
                 <div class="col-md-5">
                     <label for="dateOfBirth" class="form-label">{{ __('messages.CreateDateOfBirth') }}<span
                             class="required">*</span></label>
-                    <input type="date" class="form-control my-2 mb-3 @if ($errors->has('dateOfBirth')) is-invalid @endif"
+                    <input type="date" class="form-control @if ($errors->has('dateOfBirth')) is-invalid @endif"
                         id="date" name="dateOfBirth" value="{{ old('dateOfBirth', $employee->dateOfBirth) }}">
                     @error('dateOfBirth')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('dateOfBirth') }}
@@ -103,14 +103,14 @@
                 <div class="col-md-5">
                     <label for="nrc" class="form-label">{{ __('messages.CreateNRC') }}<span
                             class="required">*</span></label>
-                    <input type="text" class="form-control my-2 mb-3 @if ($errors->has('nrc')) is-invalid @endif"
+                    <input type="text" class="form-control @if ($errors->has('nrc')) is-invalid @endif"
                         id="nrc" name="nrc" value="{{ old('nrc', $employee->nrc) }}">
                     @error('nrc')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('nrc') }}</div>
                     @enderror
                 </div>
 
-                <div class="col-md-5 my-5">
+                <div class="col-md-5">
                     <label> {{ __('messages.CreateGender') }} </label><span class="required">*</span>
 
                     <input class="form-check-input ms-4 @if ($errors->has('gender')) is-invalid @endif"
@@ -130,7 +130,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-5 my-5">
+                <div class="col-md-5">
                     <label> {{ __('messages.CreateLanguage') }} </label><span class="required">*</span>
 
                     <input class="form-check-input ms-4 @if ($errors->has('language')) is-invalid @endif"
@@ -157,7 +157,7 @@
                 <div class="col-md-10">
                     <label for="address" class="form-label">{{ __('messages.CreateAddress') }}<span
                             class="required">*</span></label>
-                    <textarea class="form-control  my-2 mb-3 @if ($errors->has('address')) is-invalid @endif" id="address"
+                    <textarea class="form-control @if ($errors->has('address')) is-invalid @endif" id="address"
                         name="address" rows="2" maxlength="255" spellcheck="false">{{ old('address', $employee->address) }}</textarea>
                     @error('address')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('address') }}
@@ -168,7 +168,7 @@
                 <div class="col-md-5">
                     <label> {{ __('messages.CreateCareer') }} </label><span class="required">*</span>
 
-                    <select class="form-select my-2 mb-3 @if ($errors->has('career')) is-invalid @endif"
+                    <select class="form-select @if ($errors->has('career')) is-invalid @endif"
                         name="career">
                         <option value="1" @if (old('career', $employee->career_id) == 1) selected @endif>FrontEnd
                         </option>
@@ -189,7 +189,7 @@
                 <div class="col-md-5">
                     <label> {{ __('messages.CreateLevel') }} </label><span class="required">*</span>
 
-                    <select class="form-select my-2 mb-3 @if ($errors->has('level')) is-invalid @endif"
+                    <select class="form-select @if ($errors->has('level')) is-invalid @endif"
                         name="level">
                         <option value="1" @if (old('level', $employee->level_id) == 1) selected @endif>Beginner
                         </option>
@@ -208,7 +208,7 @@
                 </div>
 
 
-                <div class="col-md-10 mb-3">
+                <div class="col-md-10">
                     <label>{{ __('messages.CreateProgramingLanguage') }}</label><span class="required">*</span>
 
                     <div class="prog_lang_container my-3">

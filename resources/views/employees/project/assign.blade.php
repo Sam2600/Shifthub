@@ -11,221 +11,214 @@
 
     <div class="shadow p-3 mb-5 bg-white rounded" style="background: #e8ebe8">
 
-        <div class="row">
+        <div class="col-md-8 offset-md-3">
 
-            <div class="col-md-8 offset-md-2">
+            {{-- error messages and success messages divs --}}
+            <div id="failMessageDiv"></div>
+            <div id="successMessageDiv"></div>
 
-                <div class="col-md-8 offset-md-2">
+            <div id="projectAdded"></div>
+            <div id="projectAddedFailed"></div>
 
-                    {{-- error messages and success messages divs --}}
-                    <div id="failMessageDiv"></div>
-                    <div id="successMessageDiv"></div>
+            <div id="projectRemoved"></div>
+            <div id="projectRemovedFailed"></div>
 
-                    <div id="projectAdded"></div>
-                    <div id="projectAddedFailed"></div>
+            <form action="" id="register-form" method="POST" enctype="multipart/form-data">
 
-                    <div id="projectRemoved"></div>
-                    <div id="projectRemovedFailed"></div>
+                @csrf
 
+                <div class="text-center mb-4" id="noEmployeeWarning"></div>
 
-                    <form action="" id="register-form" method="POST" enctype="multipart/form-data">
+                <div class="row mb-4">
+                    <label for="id" class="col-md-2 col-form-label">{{ __('messages.projectShowEmployeeId') }}<span
+                            class="required">*</span></label>
 
-                        @csrf
+                    <div class="col-md-6">
 
-                        <div class="text-center mb-4" id="noEmployeeWarning"></div>
+                        @php
+                            $count = count($employees);
+                        @endphp
 
-                        <div class="d-flex align-items-center mb-4">
-                            <label for="id" class="form-label">{{ __('messages.projectShowEmployeeId') }}<span
-                                    class="required">*</span></label>
-                            <div class="col-md-8 offset-md-2 ms-auto">
+                        <select id="selectEmployeeLists"
+                            class="form-select  @if ($errors->has('employee_id')) is-invalid @endif"
+                            aria-label="Default select example" name="employee_id">
 
-                                @php
-                                    $count = count($employees);
-                                @endphp
+                            <option value="">{{ __('messages.projectShowEmployeeId') }}</option>
 
-                                <select id="selectEmployeeLists"
-                                    class="form-select  @if ($errors->has('employee_id')) is-invalid @endif"
-                                    aria-label="Default select example" name="employee_id">
+                            @foreach ($employees as $employee)
+                                <option value="{{ $employee->employee_id }}"
+                                    {{ old('employee_id') == $employee->employee_id ? 'selected' : '' }}>
+                                    {{ $employee->employee_id }}
+                                </option>
+                            @endforeach
 
-                                    <option value="">{{ __('messages.projectShowEmployeeId') }}</option>
+                        </select>
 
-                                    @foreach ($employees as $employee)
-                                        <option value="{{ $employee->employee_id }}"
-                                            {{ old('employee_id') == $employee->employee_id ? 'selected' : '' }}>
-                                            {{ $employee->employee_id }}
-                                        </option>
-                                    @endforeach
+                        <span class="text-danger" id="employeeIdError"></span>
 
-                                </select>
-                                <span class="text-danger" id="employeeIdError"></span>
-
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <label for="name" class="form-label">{{ __('messages.projectShowName') }}<span
-                                    class="required">*</span></label>
-                            <div class="col-md-8 offset-md-2 ms-auto">
-                                <input type="text"
-                                    class="form-control @if ($errors->has('name')) is-invalid @endif" id="name"
-                                    name="name" value="{{ old('name') }}" readonly>
-                                <span class="text-danger" id="nameError"></span>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <span><label> {{ __('messages.projectShowProjectName') }}<span
-                                        class="required">*</span></label></span>
-                            <div class="col-md-8 offset-md-2 ms-auto">
-                                <div class="input-group">
-
-                                    <select id="selectProjectLists"
-                                        class="form-select @if ($errors->has('project')) is-invalid @endif"
-                                        name="project">
-                                    </select>
-
-                                    <button type="button" id="projectAssignButton" class="btn btn-outline-primary btn-sm"
-                                        data-bs-toggle="modal" data-bs-target="#projectAssignModal">
-                                        +
-                                    </button>
-
-                                    <button type="button" id="projectRemoveButton" class="btn btn-outline-secondary btn-sm"
-                                        data-bs-toggle="modal" data-bs-target="#projectRemoveModal">
-                                        -</button>
-                                </div>
-                                <span class="text-danger" id="projectError"></span>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <label for="startDate" class="form-label">{{ __('messages.projectShowProjectStartDate') }}<span
-                                    class="required">*</span></label>
-                            <div class="col-md-8 offset-md-2 ms-auto">
-                                <input type="date"
-                                    class="form-control @if ($errors->has('startDate')) is-invalid @endif" id="startDate"
-                                    name="startDate" value="{{ old('startDate') }}">
-                                <span class="text-danger" id="startDateError"></span>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <label for="endDate" class="form-label">{{ __('messages.projectShowProjectEndDate') }}<span
-                                    class="required">*</span></label>
-                            <div class="col-md-8 offset-md-2 ms-auto">
-                                <input type="date"
-                                    class="form-control @if ($errors->has('endDate')) is-invalid @endif" id="endDate"
-                                    name="endDate" value="{{ old('endDate') }}">
-                                <span class="text-danger" id="endDateError"></span>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <label for="document" class="form-label">{{ __('messages.projectShowProjectDocument') }}<span
-                                    class="required">*</span></label>
-                            <div class="col-md-8 offset-md-2 ms-auto">
-                                <input type="file"
-                                    class="form-control @if ($errors->has('document')) is-invalid @endif" id="document"
-                                    name="document[]" value="{{ old('document') }}" multiple>
-
-                                <span class="text-danger" id="documentError"></span>
-                                <span class="text-danger" id="documentSizeError"></span>
-
-                            </div>
-                        </div>
-
-                        <div>
-
-                            <button type="submit" id="saveButton" class="btn save shadow my-3">
-                                <i id="spinner" class="loading-icon fa fa-spinner fa-spin hidee"></i>
-                                <span class="btn-txt">{{ __('messages.projectShowSaveButton') }}</span>
-                            </button>
-                            <a class="btn resetDisable reset ms-3 shadow my-3"
-                                href="{{ route('employees.projects') }}">{{ __('messages.projectShowCloseButton') }}</a>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Modal for project assign -->
-                <div class="modal fade" id="projectAssignModal" tabindex="-1" aria-labelledby="myModalLabel1"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    <strong>{{ __('messages.projectShowProjectCreate') }}</strong>
-                                </h1>
-                                <button type="button" class="btn-close" id="close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div id="error_messages">
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-auto text-center my-2">
-                                        <label for="project"
-                                            class="form-label">{{ __('messages.projectShowProjectName') }}<span
-                                                class="required">*</span></label>
-                                    </div>
-                                    <div class="col-md text-center">
-                                        <input type="text" class="form-control" name="project" id="project" />
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary reset" id="close"
-                                    data-bs-dismiss="modal">{{ __('messages.projectShowCloseButton') }}</button>
-                                <button type="submit" class="btn btn-primary save"
-                                    id="projectSave">{{ __('messages.projectShowSaveButton') }}</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Modal for project remove -->
-                <div class="modal fade" id="projectRemoveModal" tabindex="-1" aria-labelledby="projectRemoveModal"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    <strong>{{ __('messages.projectShowChooseProjectToRemove') }}</strong>
-                                </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" id="close"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
+                <div class="row mb-4">
+                    <label for="name" class="col-md-2 col-form-label">{{ __('messages.projectShowName') }}<span
+                            class="required">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control @if ($errors->has('name')) is-invalid @endif"
+                            id="name" name="name" value="{{ old('name') }}" readonly>
+                        <span class="text-danger" id="nameError"></span>
 
-                                <div id="error_message_remove">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <label for="name" class="col-md-2 col-form-label">{{ __('messages.projectShowProjectName') }}<span
+                            class="required">*</span></label>
+                    <div class="col-md-6">
+                        <div class="input-group">
+
+                            <select id="selectProjectLists"
+                                class="form-select @if ($errors->has('project')) is-invalid @endif" name="project">
+                            </select>
+
+                            <button type="button" id="projectAssignButton" class="btn btn-outline-primary btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#projectAssignModal">
+                                +
+                            </button>
+
+                            <button type="button" id="projectRemoveButton" class="btn btn-outline-secondary btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#projectRemoveModal">
+                                -</button>
+                        </div>
+                        <span class="text-danger" id="projectError"></span>
+
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <label for="startDate"
+                        class="col-md-2 col-form-label">{{ __('messages.projectShowProjectStartDate') }}<span
+                            class="required">*</span></label>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control @if ($errors->has('startDate')) is-invalid @endif"
+                            id="startDate" name="startDate" value="{{ old('startDate') }}">
+                        <span class="text-danger" id="startDateError"></span>
+
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <label for="endDate"
+                        class="col-md-2 col-form-label">{{ __('messages.projectShowProjectEndDate') }}<span
+                            class="required">*</span></label>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control @if ($errors->has('endDate')) is-invalid @endif"
+                            id="endDate" name="endDate" value="{{ old('endDate') }}">
+                        <span class="text-danger" id="endDateError"></span>
+
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <label for="document"
+                        class="col-md-2 col-form-label">{{ __('messages.projectShowProjectDocument') }}<span
+                            class="required">*</span></label>
+                    <div class="col-md-6">
+                        <input type="file" class="form-control @if ($errors->has('document')) is-invalid @endif"
+                            id="document" name="document[]" value="{{ old('document') }}" multiple>
+
+                        <span class="text-danger" id="documentError"></span>
+                        <span class="text-danger" id="documentSizeError"></span>
+
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" id="saveButton" class="btn save shadow my-3">
+                        {{-- <i id="spinner" class="loading-icon fa fa-spinner fa-spin hidee"></i> --}}
+                        <span class="btn-txt">{{ __('messages.projectShowSaveButton') }}</span>
+                    </button>
+                    <a class="btn resetDisable reset ms-3 shadow my-3"
+                        href="{{ route('employees.projects') }}">{{ __('messages.projectShowCloseButton') }}</a>
+                </div>
+            </form>
+
+
+            <!-- Modal for project assign -->
+            <div class="modal fade" id="projectAssignModal" tabindex="-1" aria-labelledby="myModalLabel1"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                <strong>{{ __('messages.projectShowProjectCreate') }}</strong>
+                            </h1>
+                            <button type="button" class="btn-close" id="close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="error_messages">
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-auto text-center my-2">
+                                    <label for="project"
+                                        class="form-label">{{ __('messages.projectShowProjectName') }}<span
+                                            class="required">*</span></label>
                                 </div>
-
-                                <label for="project"
-                                    class="form-label me-4">{{ __('messages.projectShowRemoveProject') }}<span
-                                        class="required">*</span></label>
-
-                                <br><br>
-
-                                <select id="removeProjectLists" class="form-select scroll" name="project">
-                                </select>
-
+                                <div class="col-md text-center">
+                                    <input type="text" class="form-control" name="project" id="project" />
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary reset" data-bs-dismiss="modal"
-                                    id="close">{{ __('messages.projectShowCloseButton') }}</button>
-                                <button type="submit" class="btn btn-primary save"
-                                    id="projectRemove">{{ __('messages.projectShowRemoveButton') }}</button>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary reset" id="close"
+                                data-bs-dismiss="modal">{{ __('messages.projectShowCloseButton') }}</button>
+                            <button type="submit" class="btn btn-primary save"
+                                id="projectSave">{{ __('messages.projectShowSaveButton') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for project remove -->
+            <div class="modal fade" id="projectRemoveModal" tabindex="-1" aria-labelledby="projectRemoveModal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                <strong>{{ __('messages.projectShowChooseProjectToRemove') }}</strong>
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" id="close"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div id="error_message_remove">
                             </div>
+
+                            <label for="project"
+                                class="form-label me-4">{{ __('messages.projectShowRemoveProject') }}<span
+                                    class="required">*</span></label>
+
+                            <br><br>
+
+                            <select id="removeProjectLists" class="form-select scroll" name="project">
+                            </select>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary reset" data-bs-dismiss="modal"
+                                id="close">{{ __('messages.projectShowCloseButton') }}</button>
+                            <button type="submit" class="btn btn-primary save"
+                                id="projectRemove">{{ __('messages.projectShowRemoveButton') }}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 @endsection
 
@@ -343,7 +336,9 @@
 
                         // Re-select the previously selected values
                         $("#selectEmployeeLists").val(selectedEmployee);
+
                         $("#selectProjectLists").val(selectedProject);
+
                         $("#removeProjectLists").val(selectedRemoveProject);
                     }
                 });
