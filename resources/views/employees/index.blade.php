@@ -136,6 +136,8 @@
                 </div>
             </div>
 
+            {{-- Storing session of current page in index --}}
+            {{ Session::put('currentPage', request()->input('page')) }}
 
 
             <div class="row align-items-center my-4">
@@ -217,9 +219,9 @@
                                     <td>{{ $employee->phone }}</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            {{-- href="{{ route('employees.view', [$employee->id, "page" => $page] ) }}"> --}}
+
                                             <a class="btn btn-sm detail shadow me-2"
-                                                href="{{ route('employees.view', ['id' => $employee->id, 'page' => request()->input('page')]) }}">
+                                                href="{{ route('employees.view', $employee->id) }}">
                                                 <i
                                                     class="material-icons">account_circle</i>{{ __('messages.indexDetail') }}
                                             </a>
@@ -253,7 +255,7 @@
                                                             <button type="button" class="btn btn-secondary reset"
                                                                 data-bs-dismiss="modal">{{ __('messages.indexNoButton') }}</button>
                                                             <form
-                                                                action="{{ route('employees.delete', ['id' => $employee->id, 'employee_id' => request()->input('employee_id'), 'career' => request()->input('career'), 'level' => request()->input('level')]) }}"
+                                                                action="{{ route('employees.delete', $employee->id) }}"
                                                                 method="POST" class="inline-form">
                                                                 @csrf
                                                                 @method('delete')

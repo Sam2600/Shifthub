@@ -43,7 +43,6 @@ class EmployeeController extends Controller
         $level = request()->input('level') ? request()->input('level') : NULL;
         $career = request()->input('career') ? request()->input('career') : NULL;
 
-
         // This process is to get the total numbers of employees and level and careers
         $totalEmployees = $this->employeeInterface->AllEmployees();
 
@@ -72,7 +71,7 @@ class EmployeeController extends Controller
         $counts = $employees->count();
 
         if ($counts == 0) {
-
+            
             // We check the query strings it means search process is proceed
             if ($employee_id != null || $career != null || $level != null) {
 
@@ -214,7 +213,7 @@ class EmployeeController extends Controller
     public function show(Request $request, $id)
     {
 
-        //$page = request()->query('page') ? request()->query('page') : 1;
+        $currentPage = Session::get('currentPage') ? Session::get('currentPage') : 1;
 
         // get the employee's data with the param $id
         $employee = $this->employeeInterface->getEmployeeById($id);
@@ -231,7 +230,7 @@ class EmployeeController extends Controller
                 array_push($array, $prog->programming_language_id);
             }
 
-            return view('employees.detail', ["employee" => $employee, "progs" => $array]);
+            return view('employees.detail', ["employee" => $employee, "progs" => $array, "page" => $currentPage]);
         }
 
         return redirect()->back()->with("noEmployeeMessage", "There is no employee with that Id");
@@ -316,7 +315,9 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
+        // This process is to pass employee_id to the index page
         session()->put('emp_id', $id);
+
         // get the employee's data with the param $id
         $employee = $this->employeeInterface->getEmployeeById($id);
 

@@ -26,7 +26,7 @@
         <div class="col-md-10 offset-md-2">
 
             @if (Session::has('register_error'))
-                <div class=" text-center alert alert-success alert-dismissible fade show col-md-8 offset-md-2"
+                <div class=" text-center alert alert-warning alert-dismissible fade show col-md-8 offset-md-2"
                     role="alert">
                     {{ Session::get('register_error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
