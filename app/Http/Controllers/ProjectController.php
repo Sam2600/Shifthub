@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 class ProjectController extends Controller
 {
 
+    // Declaring the variables to be able to use the interfaces' methods that we implemented
     protected $employeeInterface;
     protected $projectInterface;
     protected $employee_projectInterface;
@@ -35,26 +36,22 @@ class ProjectController extends Controller
      * @date 28/6/2023
      * @return \Illuminate\Http\Response => view to the project assign form
      */
-
     public function projectForm()
     {
+        // if the admin is logined with ID => 2
+        if(Session::get('id') == 2) { // we go back with error message
 
-        if(Session::get('id') == 2) {
             return redirect()->back()->with("wrongAdmin", "Admin ID 2 doesn't have permission to use this route!");
         }
 
-        
-
         // Get the employees data from the employees table
         $employees = $this->employeeInterface->AllEmployees();
-
-        // Get the projects data from the projects table
-        //$projects = $this->projectInterface->getAllProjects();
 
         return view('employees.project.assign', [
             "employees" => $employees,
         ]);
     }
+
 
     /**
      * Get all employees, projects, and pivot table's datas.
@@ -62,7 +59,6 @@ class ProjectController extends Controller
      * @date 02/7/2023
      * @return \Illuminate\Http\Response => view to the project assign form
      */
-
     public function fetchAllDatas()
     {
 
@@ -94,7 +90,7 @@ class ProjectController extends Controller
 
     public function EmployeeprojectAdd(Request $request)
     {
-
+        // First we validate the request's input
         $validate = Validator::make($request->all(), [
 
             "project" => "required|min:3"
@@ -102,7 +98,7 @@ class ProjectController extends Controller
         ]);
 
 
-        if ($validate->fails()) {
+        if ($validate->fails()) { # if fails we go back with error codes and message
 
             return response()->json([
                 "status" => 400,
@@ -115,14 +111,14 @@ class ProjectController extends Controller
         $result = $project->executeProcess();
         $message = $project->process()["error"];
 
-        if ($result) {
+        if ($result) { # if true we go back with success code and message
 
             return response()->json([
                 "status" => 200,
                 "message" => 'Project is created succefully.'
             ]);
 
-        } else {
+        } else { # if false we we go back with error code and message
 
             return response()->json([
                 "status" => 404,
@@ -142,13 +138,15 @@ class ProjectController extends Controller
     public function EmployeeprojectRemove(Request $request)
     {
 
+        // First we validate the request's input
         $validate = Validator::make($request->all(), [
 
             "project" => "required"
 
         ]);
 
-        if ($validate->fails()) {
+        if ($validate->fails()) { # if fails we go back with error codes and message
+
             return response()->json([
                 "status" => 400,
                 "message" => $validate->getMessageBag()
@@ -158,16 +156,17 @@ class ProjectController extends Controller
         $result = new Employee_projectDelete($request);
 
         $projects = $result->executeProcess();
+        $errorMessage = $result->process()["error"];
 
-
-        if ($projects == FALSE) {
+        if ($projects == FALSE) { # if false we we go back with error code and message
 
             return response()->json([
                 "status" => 403,
-                "message" => 'Project removing is failed. Because some other employeers are doing job with that project.'
+                "message" => $errorMessage
             ]);
         }
 
+         # if true we go back with success code and message
         return response()->json([
             "status" => 200,
             "message" => 'Project removed successfully.'
@@ -201,7 +200,6 @@ class ProjectController extends Controller
                     "status" => 1,
                     "message" => "Start date must be greater than end date"
                 ]);
-                //return redirect()->back()->with("DateIssues", "Start date must be greater than end date");
             }
 
             // create the object to get the method of Employee_projectStore class
@@ -215,24 +213,18 @@ class ProjectController extends Controller
                     "status" => 200,
                     "message" => "Project is assigned successfully",
                 ]);
-
-                //return redirect()->back()->with("ProjectAssign", "Project is assigned successfully");
             }
 
             // if false redirect back with fail message
-
             return response()->json([
                 "status" => 3,
                 "message" => "There is an conflict between old assigns dates and your new assign dates. Please try again"
             ]);
-
-            // return redirect()->back()->with("ProjectAssignFailed", "There is an conflict between old assigns dates and your new assign dates. Please try again");
         }
 
         return response()->json([
             "status" => 4,
             "message" => "Start date must be greater than or equal with tody date"
         ]);
-        //return redirect()->back()->with("DateIssues", "Start date must be greater than or equal with tody date");
     }
 }

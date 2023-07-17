@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use PDF;
-use App\Traits\ResponseAPI;
 use Illuminate\Http\Request;
 use App\Exports\EmployeesExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,9 +16,7 @@ use Illuminate\Support\Facades\Session;
 
 class EmployeeController extends Controller
 {
-
-    use ResponseAPI;
-
+    // 1st declare variable to refer the EmployteeInterface
     protected $employeeInterface;
 
     public function __construct(EmployeeInterface $employeeInterface)
@@ -38,10 +35,16 @@ class EmployeeController extends Controller
         // Making the current page number
         $page = request()->input('page') ? request()->input('page') : 1;
 
+        // getting the current page url
+        $currentUrl = request()->fullUrl();
+
+        // storing in session in order to use in any routes for this current url
+        session()->put("currentUrl", $currentUrl);
+
         // Catching the route's query strings
-        $employee_id = request()->input('employee_id') ? request()->input('employee_id') : NULL;
-        $level = request()->input('level') ? request()->input('level') : NULL;
-        $career = request()->input('career') ? request()->input('career') : NULL;
+        $employee_id = request()->query('employee_id') ? request()->input('employee_id') : NULL;
+        $level = request()->query('level') ? request()->input('level') : NULL;
+        $career = request()->query('career') ? request()->input('career') : NULL;
 
         // This process is to get the total numbers of employees and level and careers
         $totalEmployees = $this->employeeInterface->AllEmployees();
@@ -70,17 +73,30 @@ class EmployeeController extends Controller
         // get all total number of employees including deleted_at
         $counts = $employees->count();
 
-        if ($counts == 0) {
-            
-            // We check the query strings it means search process is proceed
-            if ($employee_id != null || $career != null || $level != null) {
 
-                if ($page > 1) {
+        if ($counts == 0) { # if count = 0 we check this condition
+
+            if ($employee_id != null || $career != null || $level != null) { # we check the query strings it means search process is proceed
+
+                if (Session::has("noEmployeeMessage")) { # This condition is just for combine testing pagination delete with serch query
+
+                    Session::forget(("noEmployeeMessage")); # And then delete the session again when we get the condition we wanted
+
+                    if ($page > 1) { #if page is still greater than 1 we can substract the page
+
+                        $page = $page - 1;
+
+                        return redirect()->route('employees.index', ["employee_id" => $employee_id, "career" => $career, "level" => $level, "page" => $page])->with('noEmployeeMessage', "There is no employee with that id");
+                    }
+                }
+
+                if ($page > 1) { # This condition is to check.. if the page is greater than 1 or not
 
                     $page = $page - 1;
 
+                    // get the employee_id with session
                     $id = Session::get('emp_id');
-                    Session::forget('emp_id');
+                    Session::forget('emp_id'); # when we got what we wanted, we delete the session again
 
                     return redirect()->route('employees.index', ["employee_id" => $employee_id, "career" => $career, "level" => $level, "page" => $page])->with('deleteMessage', "Employee id $id is removed.");
                 }
@@ -94,10 +110,23 @@ class EmployeeController extends Controller
                 ]);
             }
 
-            if ($page > 1) {
+            // This if condition is without search query and simple pagination delete
+            if (Session::has("noEmployeeMessage")) { # This condition is just for combine testing pagination delete without search query
+                Session::forget(("noEmployeeMessage")); # this proecess is the same as before
+
+                if ($page > 1) {
+
+                    $page = $page - 1;
+
+                    return redirect()->route('employees.index', ["page" => $page])->with('noEmployeeMessage', "There is no employee with that id");
+                }
+            }
+
+            if ($page > 1) {  # if page is still greater than 1 we reduce the page count
 
                 $page = $page - 1;
 
+                // get the employee_id with session
                 $id = Session::get('emp_id');
                 Session::forget('emp_id');
 
@@ -136,10 +165,12 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        // if admin logined ID is 1 we redirect back with error message
         if (Session::get('id') == 2) {
             return redirect()->back()->with("wrongAdmin", "Admin ID 2 doesn't have permission to use this route!");
         }
 
+        // We catch the current page number
         $page = request()->input('page') ? request()->input('page') : 1;
 
         //This process is to make auto generate employee_id (0001) and send it with the route to view
@@ -188,8 +219,10 @@ class EmployeeController extends Controller
     public function store(EmployeeRegisterRequest $request)
     {
 
+        // get the current page number
         $page = request()->input('page');
 
+        // making object to use EmployeeStore class's method
         $store = new EmployeeStore($this->employeeInterface, $request);
 
         $employees = $store->executeProcess(); // this method return boolean
@@ -246,17 +279,20 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+        // if admin login ID is = 2 we redirect back with error message
         if (Session::get('id') == 1) {
 
             return redirect()->back()->with("wrongAdmin", "Admin ID 1 doesn't have permission to use this route!");
         }
 
+        //catch the current page number
         $page = request()->input('page');
 
         // get the employee's data with the param $id
         $employee = $this->employeeInterface->getEmployeeById($id);
 
-        if ($employee) {
+        if ($employee) { // if true we are good to go
+
             // get the programming language datas for the employee
             $progs = $this->employeeInterface->getEmployeeProgramming_language_id($id);
 
@@ -269,7 +305,11 @@ class EmployeeController extends Controller
 
             return view('employees.edit', ["employee" => $employee, "progs" => $array]);
         }
-        return redirect()->back()->with("noEmployeeMessage", "There is no employee with that Id");
+
+        $previousIndexUrl = Session::get("currentUrl"); // get the current page's full url that we store in session in index methd
+        Session::forget("currentUrl"); // after we get what we wanted we delete session
+        return redirect($previousIndexUrl)->with("noEmployeeMessage", "There is no employee with that Id");
+
     }
 
     /**
@@ -286,7 +326,7 @@ class EmployeeController extends Controller
 
         $employee = $this->employeeInterface->getEmployeeById($id);
 
-        if ($employee) {
+        if ($employee) { // if true we are good to go
 
             // make an object to get the method of EmployeeUpdate class
             $employee = new EmployeeUpdate($request, $id);
@@ -302,7 +342,8 @@ class EmployeeController extends Controller
             return redirect()->back()->with('updateFailMessage', 'There is an error updating your employee. Please try again');
         }
 
-        return redirect()->back()->with('updateFailMessage', 'There is no employee with that Id');
+        //return view("employees.index")->with('noEmployeeMessage', 'There is no employee with that Id');
+        return redirect()->back()->with('noEmployeeMessage', 'There is no employee with that Id');
     }
 
     /**
@@ -353,7 +394,6 @@ class EmployeeController extends Controller
         return Excel::download(new EmployeesExport($request), $employeesExcel);
     }
 
-
     /**
      * Download the pdf file
      * @author KaungHtetSan
@@ -362,7 +402,6 @@ class EmployeeController extends Controller
      */
     public function pdfExport()
     {
-
         // get the employees' data from the empoyees table
         $employees = $this->employeeInterface->getAllEmployees();
 
@@ -381,7 +420,6 @@ class EmployeeController extends Controller
      * @date 02/07/2023
      * @return Response/json(["name"])
      */
-
     public function getNames()
     {
         //dd(request()->input());
