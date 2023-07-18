@@ -12,9 +12,7 @@ use ZipArchive;
 
 class DocumentationController extends Controller
 {
-
-    use ResponseAPI;
-
+     // 1st declare variable to refer the EmployteeInterface
     protected $employeeInterface;
 
     protected $employeeProjectInterface;

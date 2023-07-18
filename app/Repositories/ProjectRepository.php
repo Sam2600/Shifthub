@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\ProjectInterface;
 use App\Models\Project;
+use Illuminate\Support\Facades\DB;
 
 class ProjectRepository implements ProjectInterface {
 
@@ -16,5 +17,10 @@ class ProjectRepository implements ProjectInterface {
     public function getAllProjects()
     {
         return Project::all();
+    }
+
+    public function getProjectById($id)
+    {
+        return DB::table("projects")->where("id", $id);
     }
 }

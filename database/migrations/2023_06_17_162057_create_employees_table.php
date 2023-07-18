@@ -26,11 +26,11 @@ class CreateEmployeesTable extends Migration
             $table->string('language', 10);
             $table->integer('career_id');
             $table->integer('level_id');
-            $table->string('photo', 50);
+            $table->string('photo', 255);
             $table->softDeletes();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
-                $table->timestamps();
+            $table->timestamps();
         });
     }
 

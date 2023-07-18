@@ -79,9 +79,7 @@ class EmployeeController extends Controller
             if ($employee_id != null || $career != null || $level != null) { # we check the query strings it means search process is proceed
 
                 if (Session::has("noEmployeeMessage")) { # This condition is just for combine testing pagination delete with serch query
-
-                    Session::forget(("noEmployeeMessage")); # And then delete the session again when we get the condition we wanted
-
+                    Session::forget(("noEmployeeMessage"));
                     if ($page > 1) { #if page is still greater than 1 we can substract the page
 
                         $page = $page - 1;
@@ -112,8 +110,7 @@ class EmployeeController extends Controller
 
             // This if condition is without search query and simple pagination delete
             if (Session::has("noEmployeeMessage")) { # This condition is just for combine testing pagination delete without search query
-                Session::forget(("noEmployeeMessage")); # this proecess is the same as before
-
+                Session::forget(("noEmployeeMessage"));
                 if ($page > 1) {
 
                     $page = $page - 1;
@@ -180,17 +177,18 @@ class EmployeeController extends Controller
 
         $counts = "0000";
 
-        if ($id >= 9) {
+        if ($id > 9) {
 
             $counts = "000";
             $id = $id + 1;
             $employee_id = $counts . $id;
-        } else if ($id >= 99) {
+        } else if ($id > 99) {
 
             $counts = "00";
             $id = $id + 1;
             $employee_id = $counts . $id;
-        } else if ($id >= 999) {
+            
+        } else if ($id > 999) {
             $counts = "0";
             $id = $id + 1;
             $employee_id = $counts . $id;
@@ -218,7 +216,6 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRegisterRequest $request)
     {
-
         // get the current page number
         $page = request()->input('page');
 
@@ -279,10 +276,14 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+
+        $previousIndexUrl = Session::get("currentUrl"); // get the current page's full url that we store in session in index methd
+        Session::forget("currentUrl"); // after we get what we wanted we delete session
+
         // if admin login ID is = 2 we redirect back with error message
         if (Session::get('id') == 1) {
 
-            return redirect()->back()->with("wrongAdmin", "Admin ID 1 doesn't have permission to use this route!");
+            return redirect($previousIndexUrl)->with("wrongAdmin", "Admin ID 1 doesn't have permission to use this route!");
         }
 
         //catch the current page number
@@ -306,10 +307,7 @@ class EmployeeController extends Controller
             return view('employees.edit', ["employee" => $employee, "progs" => $array]);
         }
 
-        $previousIndexUrl = Session::get("currentUrl"); // get the current page's full url that we store in session in index methd
-        Session::forget("currentUrl"); // after we get what we wanted we delete session
         return redirect($previousIndexUrl)->with("noEmployeeMessage", "There is no employee with that Id");
-
     }
 
     /**
@@ -342,8 +340,7 @@ class EmployeeController extends Controller
             return redirect()->back()->with('updateFailMessage', 'There is an error updating your employee. Please try again');
         }
 
-        //return view("employees.index")->with('noEmployeeMessage', 'There is no employee with that Id');
-        return redirect()->back()->with('noEmployeeMessage', 'There is no employee with that Id');
+        return redirect()->back()->with("noEmployeeMessage", "There is no employee with that Id");
     }
 
     /**

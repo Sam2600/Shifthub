@@ -38,11 +38,11 @@ class Employee_projectStore extends DBTransaction
     public function process()
     {
 
-        // we get the employee id with where('name' = $employee_id) * because employee_id is employee's name
+        // we get the employee id
+        $searchResult = DB::table('employees')->select('id')->where('employee_id', $this->request->employee_id)->get();
 
-        $searchResult = DB::table('employees')->select('employee_id')->where('employee_id', $this->request->employee_id)->get();
+        $employee_id = $searchResult[0]->id; // 1
 
-        $employee_id = $searchResult[0]->employee_id; // 00001
 
         // 1st we need to check there is already the project for the request input's employee or not even if there is already a similar project, we can still assign him by checking end date of current project if new end_date is not similar and its start date is greater than old data's end date, we are good to go!
 
@@ -56,7 +56,7 @@ class Employee_projectStore extends DBTransaction
         // start to check THAT there is alredy employee and his project with this two 2 ids or not
 
         /* example
-            employee_id = 00001
+            employee_id = 1
             project_id = 1
         */
 
@@ -65,12 +65,11 @@ class Employee_projectStore extends DBTransaction
 
         $checkResults = DB::table('employee_projects')
             ->where('project_id', $checkProject) // 1
-            ->where('employee_id', $employee_id) // 00001
+            ->where('employee_id', $employee_id) // 1
             ->where('start_date', '>=', Carbon::today())
             ->orderBy('start_date', 'asc')
             ->get();
 
-        //dd($checkResults);
 
         $checking = count($checkResults->toArray());  // if there is already, count will > 0
 
@@ -114,7 +113,6 @@ class Employee_projectStore extends DBTransaction
             "updated_by" => Session::get('id'),
             "created_at" => Carbon::now()
         ]);
-
 
         // Store the data into document_employee_project table
 

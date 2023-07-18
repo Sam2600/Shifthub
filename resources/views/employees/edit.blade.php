@@ -215,45 +215,45 @@
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="prog_lang" name="prog_lang[]" value="1"
+                                type="checkbox" id="Android" name="prog_lang[]" value="1"
                                 @if (in_array(1, old('prog_lang', $progs))) checked @endif>
                             <label class="form-check-label" style="font-weight: 360"
-                                for="inlineCheckbox1">Android</label>
+                                for="Android">Android</label>
                         </div>
 
                         <div class="form-check form-check-inline ms-2">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="prog_lang" name="prog_lang[]" value="2"
+                                type="checkbox" id="Java" name="prog_lang[]" value="2"
                                 @if (in_array(2, old('prog_lang', $progs))) checked @endif>
-                            <label class="form-check-label" style="font-weight: 360" for="inlineCheckbox2">Java</label>
+                            <label class="form-check-label" style="font-weight: 360" for="Java">Java</label>
                         </div>
                         <div class="form-check form-check-inline ms-2">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="prog_lang" name="prog_lang[]" value="3"
+                                type="checkbox" id="PHP" name="prog_lang[]" value="3"
                                 @if (in_array(3, old('prog_lang', $progs))) checked @endif>
-                            <label class="form-check-label" style="font-weight: 360" for="inlineCheckbox3">PHP</label>
+                            <label class="form-check-label" style="font-weight: 360" for="PHP">PHP</label>
                         </div>
 
                         <div class="form-check form-check-inline ms-3">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="prog_lang" name="prog_lang[]" value="4"
+                                type="checkbox" id="React" name="prog_lang[]" value="4"
                                 @if (in_array(4, old('prog_lang', $progs))) checked @endif>
-                            <label class="form-check-label" style="font-weight: 360" for="inlineCheckbox3">React</label>
+                            <label class="form-check-label" style="font-weight: 360" for="React">React</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="prog_lang" name="prog_lang[]" value="5"
+                                type="checkbox" id="Laravel" name="prog_lang[]" value="5"
                                 @if (in_array(5, old('prog_lang', $progs))) checked @endif>
                             <label class="form-check-label" style="font-weight: 360"
-                                for="inlineCheckbox3">Laravel</label>
+                                for="Laravel">Laravel</label>
                         </div>
 
                         <div class="form-check form-check-inline ms-3">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="prog_lang" name="prog_lang[]" value="6"
+                                type="checkbox" id="C++" name="prog_lang[]" value="6"
                                 @if (in_array(6, old('prog_lang', $progs))) checked @endif>
-                            <label class="form-check-label" style="font-weight: 360" for="inlineCheckbox3">C++</label>
+                            <label class="form-check-label" style="font-weight: 360" for="C++">C++</label>
                         </div>
 
                         @error('prog_lang')

@@ -14,6 +14,7 @@
         <div class="col-md-8 offset-md-3">
 
             {{-- error messages and success messages divs --}}
+
             <div id="failMessageDiv"></div>
             <div id="successMessageDiv"></div>
 
@@ -22,6 +23,8 @@
 
             <div id="projectRemoved"></div>
             <div id="projectRemovedFailed"></div>
+            <div id="noProjectFound"></div>
+
 
             <form action="" id="register-form" method="POST" enctype="multipart/form-data">
 
@@ -249,7 +252,6 @@
             });
         });
 
-
         $(document).ready(function() {
 
             // initializing the fetchAllData
@@ -472,6 +474,25 @@
 
                         }
 
+                        if (response.status === 404) {
+
+                            $("#noProjectFound").html("").removeClass().removeAttr('style');
+                            $("#noProjectFound").addClass(
+                                "alert alert-warning col-md-8 text-center alert-dismissible fade show"
+                            )
+
+                            $("#noProjectFound").text(response.message)
+
+                            $("#projectRemoveModal").modal("hide")
+                            $("#projectRemoveModal").find("input").val("")
+
+                            $("#noProjectFound").fadeOut(7500)
+
+                            $("#selectProjectLists").val(null)
+
+                            fetchAllData();
+                        }
+
                         if (response.status === 200) {
 
                             $("#projectRemoved").html("").removeClass().removeAttr('style');
@@ -569,6 +590,7 @@
                             $("#successMessageDiv").text(response.message);
 
                             $("#register-form").find("input").val("")
+                            $("#selectEmployeeLists").val("")
                             $("#selectProjectLists").val(null)
 
                             clearErrorMessages();

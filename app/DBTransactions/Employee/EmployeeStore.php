@@ -37,17 +37,18 @@ class EmployeeStore extends DBTransaction
 
        $counts = "0000";
 
-       if ($id >= 9) {
+       if ($id > 9) {
 
            $counts = "000";
            $id = $id + 1;
            $employee_id = $counts . $id;
-       } else if ($id >= 99) {
+       } else if ($id > 99) {
 
            $counts = "00";
            $id = $id + 1;
            $employee_id = $counts . $id;
-       } else if ($id >= 999) {
+           
+       } else if ($id > 999) {
            $counts = "0";
            $id = $id + 1;
            $employee_id = $counts . $id;
@@ -57,7 +58,6 @@ class EmployeeStore extends DBTransaction
        $employee_id = $counts . $id;
 
        // now we get the auto generate employee_id and Start storing employee data
-
         $employee = new Employee();
         $employee->employee_id = $employee_id;
         $employee->name = trim($this->request->name);
@@ -86,6 +86,7 @@ class EmployeeStore extends DBTransaction
         $employee->created_by = Session::get('id'); // This comes from login route admin's id
         $employee->created_at = Carbon::now();
         $employee->save();
+        
 
         //When employee is stored, we keep it's result and try to add the data to the pivot table => employee_programming_languages table
 
@@ -105,11 +106,12 @@ class EmployeeStore extends DBTransaction
         $prog_lang = DB::table('employees_programming_languages')->insert($emp_prog);
 
         // When both process are successed we proceed the storing data process
+        
         if ($prog_lang && $employee) {
 
             return ['status' => true, 'error' => ''];
         }
-
+        
         // When both or one of them failed we also proceed with the false data
         return ['status' => false, 'error' => 'Failed!'];
     }

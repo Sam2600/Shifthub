@@ -36,7 +36,6 @@ class EmployeeDelete extends DBTransaction
         }
 
         $photoPath = storage_path('app/public/employees/photos/' . $employee->photo);
-        //$docsPath = storage_path('app/public/employees/documents/' . $employee->photo);
 
         if (file_exists($photoPath)) {
 

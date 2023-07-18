@@ -57,7 +57,7 @@ class EmployeesExport implements FromCollection, WithTitle, WithHeadings, Should
 
         if ($CareerAndLevelAreZeroAndIdisNull) {
 
-            $employees = Employee::query()->select('id', 'employee_id', 'name', 'phone', 'email', 'nrc', 'career_id', 'level_id', 'dateOfBirth', 'address')->where('deleted_at', null)->orderBy('updated_at', 'desc')->paginate(2);
+            $employees = Employee::query()->select('id', 'employee_id', 'name', 'phone', 'email', 'nrc', 'career_id', 'level_id', 'dateOfBirth', 'address')->where('deleted_at', null)->orderBy('updated_at', 'desc')->paginate(4);
 
             // Map the collection and modify the career_id field and level_id field
             $modifiedEmployees = $employees->map(function ($employee) {
@@ -144,7 +144,7 @@ class EmployeesExport implements FromCollection, WithTitle, WithHeadings, Should
             })
 
             // if all of conditions above are wrong, this parigante will do the job..
-            ->paginate(2);
+            ->paginate(4);
 
         // Map the collection and modify the career_id field and level_id field
         $modifiedEmployees = $employees->map(function ($employee) {

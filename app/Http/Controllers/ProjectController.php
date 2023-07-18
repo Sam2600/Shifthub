@@ -39,7 +39,7 @@ class ProjectController extends Controller
     public function projectForm()
     {
         // if the admin is logined with ID => 2
-        if(Session::get('id') == 2) { // we go back with error message
+        if (Session::get('id') == 2) { // we go back with error message
 
             return redirect()->back()->with("wrongAdmin", "Admin ID 2 doesn't have permission to use this route!");
         }
@@ -117,7 +117,6 @@ class ProjectController extends Controller
                 "status" => 200,
                 "message" => 'Project is created succefully.'
             ]);
-
         } else { # if false we we go back with error code and message
 
             return response()->json([
@@ -153,20 +152,30 @@ class ProjectController extends Controller
             ]);
         }
 
+        // And we need to check if that project is exists or not for combine testing
+        $project = $this->projectInterface->getProjectById($request->project);
+
+        if ($project->count() == 0) {
+
+            return response()->json([
+                "status" => 404,
+                "message" => "There is no project with that ID"
+            ]);
+        }
+
         $result = new Employee_projectDelete($request);
 
         $projects = $result->executeProcess();
-        $errorMessage = $result->process()["error"];
 
         if ($projects == FALSE) { # if false we we go back with error code and message
 
             return response()->json([
                 "status" => 403,
-                "message" => $errorMessage
+                "message" => "Project remove failed! There are employees working with this project."
             ]);
         }
 
-         # if true we go back with success code and message
+        # if true we go back with success code and message
         return response()->json([
             "status" => 200,
             "message" => 'Project removed successfully.'

@@ -2,9 +2,10 @@
 
 namespace App\Interfaces;
 
-interface ProjectInterface {
+interface ProjectInterface
+{
 
     public function getAllProjects();
 
-   
+    public function getProjectById($id);
 }
