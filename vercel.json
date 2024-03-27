@@ -16,7 +16,7 @@
         "APP_NAME": "Employee Assign",
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://employee-assign.vercel.app",
+
 
         "VERCEL_DEMO_MODE": "true",
         "APP_CONFIG_CACHE": "/tmp/config.php",
