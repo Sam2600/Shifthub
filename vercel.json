@@ -17,7 +17,7 @@
         "APP_ENV": "production",
         "APP_KEY": "base64:n/5vHwFWoGy8rROWT7qyHGIL28ZfSEYbYrNCFQS5uTA=",
         "APP_DEBUG": "false",
-        "APP_URL": "https://shifthub.vercel.app",
+        "APP_URL": "http://localhost",
         "VERCEL_DEMO_MODE": "true",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
