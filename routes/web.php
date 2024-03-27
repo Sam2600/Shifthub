@@ -25,6 +25,9 @@ use App\Http\Controllers\LanguageController;
 // admin id => 1 , password => admin123123 => if admin id is 1, cannot update will raise error
 // admin id => 2 , password => admin456456 => if admin id is 2, cannot create will raise error
 
+Route::get('/', function() {
+    return redirect('admins/login');
+});
 
 Route::prefix('admins')->group(function () {
 
