@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+
+  backend:
+    build:
+      context: .
+      target: php
+      args:
+        - APP_ENV=${APP_ENV}
+
+    environment:
+      - APP_ENV=${APP_ENV}
+      - CONTAINER_ROLE=app
+
+    depends_on:
+      - db
+
+    volumes:
+      - ./:/var/www/html
+
+    ports:
+      - 8000:8000
+      - 443:443
+
+  db:
+    image: mysql:8.3
+
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+
+    volumes:
+      - app-data:/var/lib/mysql
+
+    ports:
+      - 3306:3306
+
+volumes:
+  app-data: {}
