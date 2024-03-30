@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('title', 'Employees Index')
-
 @section('content')
 
     <div>
@@ -254,8 +252,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary reset"
                                                                 data-bs-dismiss="modal">{{ __('messages.indexNoButton') }}</button>
-                                                            <form
-                                                                action="{{ route('employees.delete', $employee->id) }}"
+                                                            <form action="{{ route('employees.delete', $employee->id) }}"
                                                                 method="POST" class="inline-form">
                                                                 @csrf
                                                                 @method('delete')

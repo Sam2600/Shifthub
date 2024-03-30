@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('title', 'Employees Project Documentations')
-
 @section('content')
 
     <div>

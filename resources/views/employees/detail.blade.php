@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('title', 'Employee Detail')
-
 @section('content')
 
     <div>

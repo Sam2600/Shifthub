@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('title', 'Employees')
-
 @section('content')
 
     <div class=" my-3 row align-items-center">
@@ -24,7 +22,7 @@
     <div class="shadow p-3 row mb-5 bg-white rounded" style="background: #e8ebe8">
 
         <div class="col-md-10 offset-md-2">
-            
+
             @if (Session::has('register_error'))
                 <div class=" text-center alert alert-warning alert-dismissible fade show col-md-8 offset-md-2"
                     role="alert">

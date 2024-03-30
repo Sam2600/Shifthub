@@ -25,16 +25,19 @@ use App\Http\Controllers\LanguageController;
 // admin id => 1 , password => admin123123 => if admin id is 1, cannot update will raise error
 // admin id => 2 , password => admin456456 => if admin id is 2, cannot create will raise error
 
-// Route::get('/', function() {
-//     return redirect('admins/login');
-// });
+Route::get('/', function() {
+    return redirect('admins/login');
+});
 
 Route::prefix('admins')->group(function () {
 
+    // Route::view('/register', 'Register');
     Route::view('/login', 'login');
+    // Route::post('/register', [AdminController::class, 'register'])->name('admins.register');
     Route::post('/login', [AdminController::class, 'login'])->name('admins.login');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admins.logout');
 });
+
 //For employees, projects CRUD
 Route::prefix('employees')->middleware('admin')->group(function () {
 
