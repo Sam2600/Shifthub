@@ -69,7 +69,7 @@
                 </div>
 
                 <p class="col-md-10 offset-md-1">
-                    Already registered ? Please login <a href="/admins/register" class="underline">Here</a>
+                    Already registered ? Please login <a href="/admins/register" class="underline">Here</a> Test
                 </p>
 
                 <button type="submit" name="submit" class="btn col-md-10 offset-md-1 shadow active login" role="button"
