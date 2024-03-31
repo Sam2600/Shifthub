@@ -25,4 +25,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to AWS EC2
-        run: ssh ${{ secrets.AWS_INSTANCE_IP }} "cd /var/www/html/shifthub && git pull && composer install && php artisan optimize:clear"
+        run: ssh -v ${{ secrets.AWS_INSTANCE_IP }} "cd /var/www/html/shifthub && git pull && composer install && php artisan optimize:clear"
