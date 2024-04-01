@@ -1,5 +1,9 @@
 body {
     background: #e8ebe8;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: auto;
 }
 
 span,

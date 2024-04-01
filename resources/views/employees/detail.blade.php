@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-
     <div>
         <h4 class="text-dark my-4 me-auto"><i class="material-icons"
                 style="vertical-align: -4px">person</i>{{ __('messages.DetailEmployeeDetail') }}
@@ -23,7 +22,7 @@
 
                                 <div class="card-body text-center">
                                     <!-- Profile picture image-->
-                                    <img class="img-account-profile rounded-circle mb-2"
+                                    <img class="img-account-profile emp-img rounded-circle mb-2"
                                         src="{{ Storage::url('employees/photos/' . $employee->photo) }}"
                                         alt="employee photo">
                                     <!-- Profile picture help block-->

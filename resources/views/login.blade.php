@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="container bg-white rounded shadow my-3 py-1">
+    <div class="container bg-white rounded shadow my-3 pt-1">
         <code class="py-1">
             <pre>
                 Hint ***
@@ -10,9 +10,8 @@
                 For admin with update access => ID - 2, Password - admin456456</pre>
         </code>
     </div>
-
-
-    <div class="rounded bg-white d-flex flex-column flex-md-row flex-lg-row justify-content-evenly align-items-center p-5">
+    <div
+        class="rounded bg-white d-flex flex-column flex-md-row flex-lg-row justify-content-center align-items-center h-auto p-5">
 
         <div class="d-flex flex-column justify-content-center col-12 col-md-6 col-lg-6">
 
@@ -68,12 +67,12 @@
                     @enderror
                 </div>
 
-                <p class="col-md-10 offset-md-1">
+                {{-- <p class="col-md-10 offset-md-1">
                     Already registered ? Please login <a href="/admins/register" class="underline">Here</a> Test
-                </p>
+                </p> --}}
 
-                <button type="submit" name="submit" class="btn col-md-10 offset-md-1 shadow active login" role="button"
-                    aria-pressed="true">
+                <button type="submit" name="submit" class="btn col-md-10 offset-md-1 shadow active login mt-3"
+                    role="button" aria-pressed="true">
                     Login
                 </button>
 
