@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\Documentationinterface;
+use App\Interfaces\DocumentationInterface;
 use Illuminate\Support\Facades\DB;
 
 
