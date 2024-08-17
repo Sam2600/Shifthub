@@ -6,18 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {{-- bootstrap.css --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}">
     {{-- material icons --}}
-    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ URL::asset('css/material-icon.css') }}">
     {{-- fav icon --}}
     <link rel="icon" href="{{ URL::asset('images/shifthub.png') }}" type="image/png">
     <!-- Font Awesome -->
-    <link class="" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ URL::asset('css/font-awsome.css') }}">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ URL::asset('css/google-font.css') }}">
     {{-- My Custom Css --}}
-    <link rel="stylesheet" href="{{ URL::asset('css/mine.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/shifthub.css') }}">
     {{-- laravel ajax --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -36,9 +35,9 @@
         @yield('content')
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ URL::asset('js/popper.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap.js') }}"></script>
+    <script src="{{ URL::asset('js/jquery.js') }}"></script>
 
     @yield('script')
 

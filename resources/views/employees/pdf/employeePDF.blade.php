@@ -5,40 +5,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="public\css\mine.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}">
+    <link href="public\css\shifthub.css" rel="stylesheet">
     <title>Employees</title>
 
     <style>
         table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    thead {
-        height: 25px;
-        background-color: #333;
-        color: white;
-        font-size: 15px;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 2%;
-    }
+        thead {
+            height: 25px;
+            background-color: #333;
+            color: white;
+            font-size: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2%;
+        }
 
-    tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-    tbody tr {
-        border-bottom: 1px solid #ddd;
-        font-size: 14px;
-        text-align: center;
-        height: 55px;
-    }
+        tbody tr {
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            text-align: center;
+            height: 55px;
+        }
 
-    tbody td {
-        padding: 7px;
-    }
+        tbody td {
+            padding: 7px;
+        }
     </style>
 </head>
 
@@ -94,16 +94,16 @@
                         <td>Senior Engineer</td>
                     @endif
 
-                    <td>{{$employee->dateOfBirth}}</td>
-                    <td>{{$employee->address}}</td>
+                    <td>{{ $employee->dateOfBirth }}</td>
+                    <td>{{ $employee->address }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ URL::asset('js/popper.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap.js') }}"></script>
+    <script src="{{ URL::asset('js/jquery.js') }}"></script>
 
 </body>
 
