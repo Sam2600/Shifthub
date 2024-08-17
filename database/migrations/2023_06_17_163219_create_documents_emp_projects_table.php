@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateDocumentsEmpProjectsTable extends Migration
@@ -13,18 +14,19 @@ class CreateDocumentsEmpProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents_emp_projects', function (Blueprint $table) {
-            $table->id();
-            $table->string('filename', 250);
-            $table->string('filesize', 250);
-            $table->string('filepath', 250);
-            $table->integer('employee_project_id');
-            // $table->foreignId('employee_project_id')->constrained('employees_projects')->onDelete('cascade');
-            $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by')->nullable();
-            $table->timestamps();
-        });
+        // Added condition if table is already exist, we skip for creating a new one
+        if (! Schema::hasTable('documents_emp_projects')) {
+            Schema::create('documents_emp_projects', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('employees_project_id')->constrained('employees_projects')->onDelete('cascade');
+                $table->string('filename', 250);
+                $table->string('filesize', 250);
+                $table->string('filepath', 250);
+                $table->integer('created_by');
+                $table->integer('updated_by')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
