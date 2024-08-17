@@ -102,13 +102,7 @@
                                                 <td>
                                                     <label> {{ __('messages.CreateGender') }} </label>
                                                 </td>
-                                                <td class="text-primary">
-                                                    @if ($employee->gender == 1)
-                                                        Male
-                                                    @elseif ($employee->gender == 2)
-                                                        Female
-                                                    @endif
-                                                </td>
+                                                <td class="text-primary">{{ $employee->gender }}</td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -125,77 +119,28 @@
                                                 <td>
                                                     <label> {{ __('messages.CreateLanguage') }} </label>
                                                 </td>
-                                                <td class="text-primary">
-                                                    @php $languages = explode(', ', $employee->language) @endphp
-                                                    @if (in_array(1, $languages))
-                                                        English
-                                                    @endif
-                                                    @if (in_array(2, $languages))
-                                                        Japan
-                                                    @endif
-                                                </td>
+                                                <td class="text-primary">{{ $employee->languages }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <label> {{ __('messages.CreateCareer') }} </label>
                                                 </td>
-                                                <td class="text-primary">
-
-                                                    @if ($employee->career_id == 1)
-                                                        FrontEnd
-                                                    @elseif ($employee->career_id == 2)
-                                                        BackEnd
-                                                    @elseif ($employee->career_id == 3)
-                                                        FullStack
-                                                    @elseif ($employee->career_id == 4)
-                                                        Mobile
-                                                    @endif
-
-                                                </td>
+                                                <td class="text-primary">{{ $employee->career }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <label> {{ __('messages.CreateLevel') }} </label>
                                                 </td>
-                                                <td class="text-primary">
-                                                    @if ($employee->level_id == 1)
-                                                        Begineer Engineer
-                                                    @elseif ($employee->level_id == 2)
-                                                        Junior Engineer
-                                                    @elseif ($employee->level_id == 3)
-                                                        Engineer
-                                                    @elseif ($employee->level_id == 4)
-                                                        Senior Engineer
-                                                    @endif
-                                                </td>
+                                                <td class="text-primary">{{ $employee->level }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <label>{{ __('messages.CreateProgramingLanguage') }}</label>
                                                 </td>
-                                                <td class="text-primary">
-                                                    @if (in_array(1, $progs))
-                                                        Java
-                                                    @endif
-                                                    @if (in_array(2, $progs))
-                                                        C++
-                                                    @endif
-                                                    @if (in_array(3, $progs))
-                                                        PHP
-                                                    @endif
-                                                    @if (in_array(4, $progs))
-                                                        React
-                                                    @endif
-                                                    @if (in_array(5, $progs))
-                                                        Laravel
-                                                    @endif
-                                                    @if (in_array(6, $progs))
-                                                        Android
-                                                    @endif
-                                                </td>
+                                                <td class="text-primary">{{ $employee->programming_languages }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -26,9 +26,10 @@ class CreateEmployeesTable extends Migration
                 $table->string('gender', 10);
                 $table->string('dateOfBirth', 50);
                 $table->string('address', 255);
-                $table->string('language', 10);
-                $table->integer('career_id');
-                $table->integer('level_id');
+                $table->string('programming_languages', 20);
+                $table->string('languages', 20);
+                $table->string('career', 25);
+                $table->string('level', 25);
                 $table->string('photo', 255);
                 $table->integer('created_by');
                 $table->integer('updated_by')->nullable();

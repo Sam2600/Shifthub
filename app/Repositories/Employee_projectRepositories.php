@@ -37,6 +37,6 @@ class Employee_projectRepositories implements Employee_projectInterface
 
     public function getIDofEmployeeProjectByEmployeeId($id)
     {
-        return DB::table('employee_projects')->select('id')->where('employee_id', $id)->where('deleted_at', NULL)->get();
+        return DB::table('employees_projects')->select('id')->where('employee_id', $id)->get();
     }
 }

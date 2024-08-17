@@ -12,7 +12,7 @@ interface EmployeeInterface {
 
     public function getEmployeeProgramming_language_id($id);
 
-    public function AllEmployeesWithTrashed();
+    public function getTotalCountOfEmployees();
 
     public function getDistinctValues();
 

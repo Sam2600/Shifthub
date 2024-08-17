@@ -4,25 +4,22 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Illuminate\Http\Request;
+use App\Traits\HelperFunctions;
 use App\Exports\EmployeesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Interfaces\EmployeeInterface;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\EmployeeUpdateRequest;
 use App\Http\Requests\EmployeeRegisterRequest;
 use App\DBTransactions\Employee\EmployeeStore;
 use App\DBTransactions\Employee\EmployeeDelete;
 use App\DBTransactions\Employee\EmployeeUpdate;
-use App\Http\Requests\EmployeeUpdateRequest;
-use Illuminate\Support\Facades\Session;
 
 class EmployeeController extends Controller
 {
-    // 1st declare variable to refer the EmployteeInterface
-    protected $employeeInterface;
+    use HelperFunctions;
 
-    public function __construct(EmployeeInterface $employeeInterface)
-    {
-        $this->employeeInterface = $employeeInterface;
-    }
+    public function __construct(protected EmployeeInterface $employeeInterface) {}
 
     /**
      * Display a listing of the all employee from the employees table.
@@ -171,31 +168,9 @@ class EmployeeController extends Controller
         $page = request()->input('page') ? request()->input('page') : 1;
 
         //This process is to make auto generate employee_id (0001) and send it with the route to view
-        $id = $this->employeeInterface->AllEmployeesWithTrashed();
+        $count = $this->employeeInterface->getTotalCountOfEmployees();
 
-        $id = count($id); // this step is extra
-
-        $counts = "0000";
-
-        if ($id > 9) {
-
-            $counts = "000";
-            $id = $id + 1;
-            $employee_id = $counts . $id;
-        } else if ($id > 99) {
-
-            $counts = "00";
-            $id = $id + 1;
-            $employee_id = $counts . $id;
-            
-        } else if ($id > 999) {
-            $counts = "0";
-            $id = $id + 1;
-            $employee_id = $counts . $id;
-        }
-
-        $id = $id + 1;
-        $employee_id = $counts . $id; // now we get the auto generate employee_id and we carry it to the view
+        $employee_id = $this->autoIncreasedEmployeeID($count);
 
         return view(
             'employees.create',
@@ -240,7 +215,7 @@ class EmployeeController extends Controller
      * @param integer => $id The employee's ID
      * @return \Illuminate\View\View => A view to employee's detail form
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
 
         $currentPage = Session::get('currentPage') ? Session::get('currentPage') : 1;
@@ -249,18 +224,8 @@ class EmployeeController extends Controller
         $employee = $this->employeeInterface->getEmployeeById($id);
 
         if ($employee) {
-            // get the programming language datas for the employee
-            $progs = $this->employeeInterface->getEmployeeProgramming_language_id($id);
 
-            // Make empty to store the programming language id and send to view
-            $array = [];
-
-            foreach ($progs as $prog) {
-
-                array_push($array, $prog->programming_language_id);
-            }
-
-            return view('employees.detail', ["employee" => $employee, "progs" => $array, "page" => $currentPage]);
+            return view('employees.detail', ["employee" => $employee, "page" => $currentPage]);
         }
 
         return redirect()->back()->with("noEmployeeMessage", "There is no employee with that Id");

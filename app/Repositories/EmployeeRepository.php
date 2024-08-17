@@ -31,8 +31,8 @@ class EmployeeRepository implements EmployeeInterface
         $levelIsNotZeroAndCareerIsZero = request()->level != 0;
         $careerIsNotZeroAndLevelIsZero = request()->career != 0;
 
-    
-        $employees = DB::table('employees')->where('deleted_at', NULL)->orderBy('updated_at', 'desc')
+
+        $employees = DB::table('employees')->orderBy('updated_at', 'desc')
 
             ->when($idNotNullAndCareerAndLevelNotZero, function ($query) {
 
@@ -94,9 +94,9 @@ class EmployeeRepository implements EmployeeInterface
      * @return array => query data of employees table by ignoring the deleted_at
      */
 
-    public function AllEmployeesWithTrashed()
+    public function getTotalCountOfEmployees()
     {
-        return Employee::withTrashed()->get();
+        return Employee::count();
     }
 
 

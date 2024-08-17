@@ -2,62 +2,33 @@
 
 namespace App\DBTransactions\Employee;
 
+use Carbon\Carbon;
 use App\Models\Employee;
 use App\Classes\DBTransaction;
-use Illuminate\Support\Facades\DB;
+use App\Traits\HelperFunctions;
 use App\Interfaces\EmployeeInterface;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 
 
 class EmployeeStore extends DBTransaction
 {
+    use HelperFunctions;
 
-    protected $employeeInterface, $request;
-
-    public function __construct(EmployeeInterface $employeeInterface, $request)
-    {
-        $this->employeeInterface = $employeeInterface;
-        $this->request = $request;
-    }
-
+    public function __construct(protected EmployeeInterface $employeeInterface, protected $request) {}
 
     /**
      * @author KaungHtetSan
-     * @create 06/21/2023
-     * @param  no param.. use the class's $employeInterface variable and $request variable
-     * @return array
+     * @create 2023/6/21
+     * @update 2024/8/17
+     * @return array result
      */
     public function process()
     {
-       //This process is to make auto generate employee_id (0001) and send it with the route to view
-       $id = $this->employeeInterface->AllEmployeesWithTrashed();
+        $count = $this->employeeInterface->getTotalCountOfEmployees();
 
-       $id = count($id); // this step is extra
+        $employee_id = $this->autoIncreasedEmployeeID($count);
 
-       $counts = "0000";
-
-       if ($id > 9) {
-
-           $counts = "000";
-           $id = $id + 1;
-           $employee_id = $counts . $id;
-       } else if ($id > 99) {
-
-           $counts = "00";
-           $id = $id + 1;
-           $employee_id = $counts . $id;
-           
-       } else if ($id > 999) {
-           $counts = "0";
-           $id = $id + 1;
-           $employee_id = $counts . $id;
-       }
-
-       $id = $id + 1;
-       $employee_id = $counts . $id;
-
-       // now we get the auto generate employee_id and Start storing employee data
+        // now we get the auto generate employee_id and Start storing employee data
         $employee = new Employee();
         $employee->employee_id = $employee_id;
         $employee->name = trim($this->request->name);
@@ -69,13 +40,15 @@ class EmployeeStore extends DBTransaction
         $employee->address = $this->request->address;
 
         // got data as array and make strings to store it
+        $programming_languages = $this->request->prog_lang;
+        $employee->programming_languages = implode(', ', $programming_languages);
+
+        // got data as array and make strings to store it
         $languages = $this->request->language;
-        $language = implode(', ', $languages);
+        $employee->languages = implode(', ', $languages);
 
-        $employee->language = $language;
-
-        $employee->career_id = $this->request->career;
-        $employee->level_id = $this->request->level;
+        $employee->career = $this->request->career;
+        $employee->level = $this->request->level;
 
         //photo process
         $file = $this->request->file('photo');
@@ -86,34 +59,7 @@ class EmployeeStore extends DBTransaction
         $employee->created_by = Session::get('id'); // This comes from login route admin's id
         $employee->created_at = Carbon::now();
         $employee->save();
-        
 
-        //When employee is stored, we keep it's result and try to add the data to the pivot table => employee_programming_languages table
-
-        $emp_prog = [];
-
-        foreach ($this->request->prog_lang as $prog_lang) {
-
-            $empProgs = [
-                "employee_id" => $employee->id,
-                "programming_language_id" => $prog_lang,
-                "created_by" => Session::get('id'),
-            ];
-
-            array_push($emp_prog, $empProgs);
-        }
-
-        $prog_lang = DB::table('employees_programming_languages')->insert($emp_prog);
-
-        // When both process are successed we proceed the storing data process
-        
-        if ($prog_lang && $employee) {
-
-            return ['status' => true, 'error' => ''];
-        }
-        
-        // When both or one of them failed we also proceed with the false data
-        return ['status' => false, 'error' => 'Failed!'];
+        return $employee ? ['status' => true, 'error' => ''] : ['status' => false, 'error' => 'Failed!'];
     }
 }
-

@@ -188,32 +188,13 @@
                         <tbody>
                             @foreach ($employees as $employee)
                                 <tr class="small-row align-middle">
-                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $loop->iteration + ($employees->currentPage() - 1) * $employees->perPage() }}
+                                    </td>
                                     <td>{{ $employee->employee_id }}</td>
                                     <td>{{ $employee->name }}</td>
                                     <td>{{ $employee->email }}</td>
-                                    <td>
-                                        @if ($employee->career_id === 1)
-                                            FrontEnd
-                                        @elseif ($employee->career_id === 2)
-                                            BackEnd
-                                        @elseif ($employee->career_id === 3)
-                                            FullStack
-                                        @else
-                                            Mobile
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($employee->level_id === 1)
-                                            Beginner Engineer
-                                        @elseif ($employee->level_id === 2)
-                                            Junior Engineer
-                                        @elseif ($employee->level_id === 3)
-                                            Engineer
-                                        @else
-                                            Senior Engineer
-                                        @endif
-                                    </td>
+                                    <td>{{ $employee->career }}</td>
+                                    <td>{{ $employee->level }}</td>
                                     <td>{{ $employee->phone }}</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
