@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\ProjectInterface;
-use App\Models\Project;
 use Illuminate\Support\Facades\DB;
+use App\Interfaces\ProjectInterface;
 
-class ProjectRepository implements ProjectInterface {
+class ProjectRepository implements ProjectInterface
+{
 
-     /**
+    /**
      * @author KaungHtetSan
      * @date 21/06/2023
      * @return array => query data of projects table
@@ -16,7 +16,7 @@ class ProjectRepository implements ProjectInterface {
 
     public function getAllProjects()
     {
-        return Project::all();
+        return DB::table('projects')->get();
     }
 
     public function getProjectById($id)

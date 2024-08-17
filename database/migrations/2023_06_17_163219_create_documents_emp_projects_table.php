@@ -18,7 +18,7 @@ class CreateDocumentsEmpProjectsTable extends Migration
         if (! Schema::hasTable('documents_emp_projects')) {
             Schema::create('documents_emp_projects', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('employees_project_id')->constrained('employees_projects')->onDelete('cascade');
+                $table->foreignId('employees_projects_id')->constrained('employees_projects')->onDelete('cascade');
                 $table->string('filename', 250);
                 $table->string('filesize', 250);
                 $table->string('filepath', 250);

@@ -28,12 +28,12 @@
                 </div>
             @endif
 
-            @if (Session::has('noEmployeeMessage'))
+            {{-- @if (Session::has('noEmployeeMessage'))
                 <div class="alert alert-warning text-center alert-dismissible fade show col-md-5" role="alert">
                     {{ Session::get('noEmployeeMessage') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+            @endif --}}
 
             @if (Session::has('deleteMessage'))
                 <div class="alert alert-success text-center alert-dismissible fade show col-md-5" role="alert">
@@ -91,15 +91,7 @@
                                         @foreach ($careers as $career)
                                             <option value="{{ $career }}"
                                                 {{ request()->input('career') == $career ? 'selected' : null }}>
-                                                @if ($career == 1)
-                                                    FrontEnd
-                                                @elseif($career == 2)
-                                                    BackEnd
-                                                @elseif($career == 3)
-                                                    Fullstack
-                                                @else
-                                                    Mobile
-                                                @endif
+                                                {{ $career }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -111,15 +103,7 @@
                                         @foreach ($levels as $level)
                                             <option value="{{ $level }}"
                                                 {{ request()->input('level') == $level ? 'selected' : null }}>
-                                                @if ($level == 1)
-                                                    Beginner Engineer
-                                                @elseif($level == 2)
-                                                    Junior Engineer
-                                                @elseif($level == 3)
-                                                    Engineer
-                                                @else
-                                                    Senior Engineer
-                                                @endif
+                                                {{ $level }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -135,7 +119,7 @@
             </div>
 
             {{-- Storing session of current page in index --}}
-            {{ Session::put('currentPage', request()->input('page')) }}
+            {{-- {{ Session::put('currentPage', request()->input('page')) }} --}}
 
 
             <div class="row align-items-center my-4">

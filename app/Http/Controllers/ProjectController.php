@@ -68,15 +68,14 @@ class ProjectController extends Controller
         // We make a count for the number of rows to check conditions
         $projectCount = count($projects);
 
-        // Get the joined datas of employees and projects from the employee_projects table
-        $employee_projects = $this->employee_projectInterface->getJoinedEmployeeProject();
+        // Get the joined datas of employees and projects from the employees_projects table
+        $employees_projects = $this->employee_projectInterface->getJoinedEmployeeProject();
 
 
         return response()->json([
-            //"employees" => $employees,
             "projectCount" => $projectCount,
             "projects" => $projects,
-            "employee_projects" => $employee_projects
+            "employees_projects" => $employees_projects
         ]);
     }
 
@@ -128,7 +127,7 @@ class ProjectController extends Controller
 
 
     /**
-     * Remove projects table and employee_projects table's row datas
+     * Remove projects table and employees_projects table's row datas
      * @author Kaung Htet San
      * @date 28/6/2023
      * @return \Illuminate\Http\RedirectResponse => Redirect back to the project assign form with success or fail messages
@@ -184,7 +183,7 @@ class ProjectController extends Controller
 
 
     /**
-     * Store a newly created projects and employees data into the employee_projects table.
+     * Store a newly created projects and employees data into the employees_projects table.
      * @author Kaung Htet San
      * @date 28/6/2023
      * @return \Illuminate\Http\RedirectResponse => Redirect back to the project assign form with success or fail messages

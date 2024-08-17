@@ -37,7 +37,7 @@ class DocumentationController extends Controller
     public function downloadDocs($id)
     {
 
-        // first we get the employee_projects table's primary key id
+        // first we get the employees_projects table's primary key id
         $emp_prjs = $this->employeeProjectInterface->getIDofEmployeeProjectByEmployeeId($id);
 
         $results =  $emp_prjs->toArray(); // emp_prj tabl's id => 2
@@ -48,7 +48,7 @@ class DocumentationController extends Controller
 
             $docArrays = [];
 
-            foreach ($results as $result) { // now we foreach loop and add the filename that is connected with id (employee_projects's table)
+            foreach ($results as $result) { // now we foreach loop and add the filename that is connected with id (employees_projects's table)
                 $docs = $this->documentationInterface->getFilenameOfDocumentEmpProjectTableByEmployeeProjectId($result->id);
                 array_push($docArrays, $docs);
             }
@@ -108,7 +108,7 @@ class DocumentationController extends Controller
 
         if ($employee) { # if true (means there is an employee with that id) we proceed
 
-            // first we get the employee_projects table's primary key id
+            // first we get the employees_projects table's primary key id
             $emp_prjs = $this->employeeProjectInterface->getIDofEmployeeProjectByEmployeeId($id); // id => 2
 
             if (count($emp_prjs->toArray()) == 0) { #check if the employee is assigned or not with count of assigns

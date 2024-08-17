@@ -24,7 +24,8 @@
             @endif
 
             <div class="col-md-6">
-                <img class="img-account-profile rounded-circle mb-2" id="preview" src="{{ Storage::url('employees/photos/' . $employee->photo) }}" alt="Preview">
+                <img class="img-account-profile rounded-circle mb-2" id="preview"
+                    src="{{ Storage::url('employees/photos/' . $employee->photo) }}" alt="Preview">
             </div>
 
             <form class="row g-5" action="{{ route('employees.update', $employee->id) }}" method="POST"
@@ -114,14 +115,14 @@
                     <label> {{ __('messages.CreateGender') }} </label><span class="required">*</span>
 
                     <input class="form-check-input ms-4 @if ($errors->has('gender')) is-invalid @endif"
-                        type="radio" name="gender" id="male" value="1"
-                        @if (old('gender', $employee->gender) == 1) checked @endif>
+                        type="radio" name="gender" id="male" value="male"
+                        @if (old('gender', $employee->gender) == 'male') checked @endif>
                     <label class="form-check-label " style="font-weight: 360"
                         for="male">{{ __('messages.CreateGenderMale') }}</label>
 
                     <input class="form-check-input ms-4 @if ($errors->has('gender')) is-invalid @endif ms-3"
-                        type="radio" name="gender" id="female" value="2"
-                        @if (old('gender', $employee->gender) == 2) checked @endif>
+                        type="radio" name="gender" id="female" value="female"
+                        @if (old('gender', $employee->gender) == 'female') checked @endif>
                     <label class="form-check-label" style="font-weight: 360"
                         for="female">{{ __('messages.CreateGenderFemale') }}</label>
                     @error('gender')
@@ -131,19 +132,22 @@
                 </div>
 
                 <div class="col-md-5">
+
+                    @php
+                        $languages = explode(', ', $employee->languages);
+                    @endphp
+
                     <label> {{ __('messages.CreateLanguage') }} </label><span class="required">*</span>
 
                     <input class="form-check-input ms-4 @if ($errors->has('language')) is-invalid @endif"
-                        type="checkbox" id="english" name="language[]" value="1"
-                        @php $languages = explode(', ', $employee->language) @endphp
-                        @if (in_array(1, old('language', $languages))) checked @endif>
+                        type="checkbox" id="english" name="language[]" value="English"
+                        @if (in_array('English', old('language', $languages))) checked @endif>
                     <label class="form-check-label" style="font-weight: 360"
                         for="english">{{ __('messages.CreateLanguageEnglish') }}</label>
 
                     <input class="form-check-input ms-4 @if ($errors->has('language')) is-invalid @endif"
-                        type="checkbox" id="japan" name="language[]" value="2"
-                        @php $languages = explode(', ', $employee->language) @endphp
-                        @if (in_array(2, old('language', $languages))) checked @endif>
+                        type="checkbox" id="japan" name="language[]" value="Japan"
+                        @if (in_array('Japan', old('language', $languages))) checked @endif>
                     <label class="form-check-label" style="font-weight: 360"
                         for="japan">{{ __('messages.CreateLanguageJapan') }}</label>
 
@@ -157,8 +161,8 @@
                 <div class="col-md-10">
                     <label for="address" class="form-label">{{ __('messages.CreateAddress') }}<span
                             class="required">*</span></label>
-                    <textarea class="form-control @if ($errors->has('address')) is-invalid @endif" id="address"
-                        name="address" rows="2" maxlength="255" spellcheck="false">{{ old('address', $employee->address) }}</textarea>
+                    <textarea class="form-control @if ($errors->has('address')) is-invalid @endif" id="address" name="address"
+                        rows="2" maxlength="255" spellcheck="false">{{ old('address', $employee->address) }}</textarea>
                     @error('address')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('address') }}
                         </div>
@@ -168,15 +172,18 @@
                 <div class="col-md-5">
                     <label> {{ __('messages.CreateCareer') }} </label><span class="required">*</span>
 
-                    <select class="form-select @if ($errors->has('career')) is-invalid @endif"
-                        name="career">
-                        <option value="1" @if (old('career', $employee->career_id) == 1) selected @endif>FrontEnd
+                    <select class="form-select @if ($errors->has('career')) is-invalid @endif" name="career">
+                        <option value="Frontend" @if (old('career', $employee->career) == 'Frontend') selected @endif>
+                            Frontend
                         </option>
-                        <option value="2" @if (old('career', $employee->career_id) == 2) selected @endif>BackEnd
+                        <option value="Backend" @if (old('career', $employee->career) == 'Backend') selected @endif>
+                            Backend
                         </option>
-                        <option value="3" @if (old('career', $employee->career_id) == 3) selected @endif>FullStack
+                        <option value="Fullstack" @if (old('career', $employee->career) == 'Fullstack') selected @endif>
+                            Fullstack
                         </option>
-                        <option value="4" @if (old('career', $employee->career_id) == 4) selected @endif>Mobile
+                        <option value="Mobile" @if (old('career', $employee->career) == 'Mobile') selected @endif>
+                            Mobile
                         </option>
                     </select>
                     @error('career')
@@ -189,16 +196,19 @@
                 <div class="col-md-5">
                     <label> {{ __('messages.CreateLevel') }} </label><span class="required">*</span>
 
-                    <select class="form-select @if ($errors->has('level')) is-invalid @endif"
-                        name="level">
-                        <option value="1" @if (old('level', $employee->level_id) == 1) selected @endif>Beginner
+                    <select class="form-select @if ($errors->has('level')) is-invalid @endif" name="level">
+                        <option value="Beginner" @if (old('level', $employee->level) == 'Beginner') selected @endif>
+                            Beginner
                         </option>
-                        <option value="2" @if (old('level', $employee->level_id) == 2) selected @endif>Junior
-                            Engineer</option>
-                        <option value="3" @if (old('level', $employee->level_id) == 3) selected @endif>Engineer
+                        <option value="Junior Engineer" @if (old('level', $employee->level) == 'Junior Engineer') selected @endif>Junior
+                            Engineer
                         </option>
-                        <option value="4" @if (old('level', $employee->level_id) == 4) selected @endif>Senior
-                            Enginner</option>
+                        <option value="Engineer" @if (old('level', $employee->level) == 'Engineer') selected @endif>
+                            Engineer
+                        </option>
+                        <option value="Senior Engineer" @if (old('level', $employee->level) == 'Senior Engineer') selected @endif>
+                            Senior Enginner
+                        </option>
                     </select>
                     @error('level')
                         <div id="employee_idHelp" class="form-text text-danger">{{ $errors->first('level') }}
@@ -207,52 +217,53 @@
 
                 </div>
 
+                @php
+                    $programming_languages = explode(', ', $employee->programming_languages);
+                @endphp
 
                 <div class="col-md-10">
                     <label>{{ __('messages.CreateProgramingLanguage') }}</label><span class="required">*</span>
 
                     <div class="prog_lang_container my-3">
-
                         <div class="form-check form-check-inline">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="Android" name="prog_lang[]" value="1"
-                                @if (in_array(1, old('prog_lang', $progs))) checked @endif>
-                            <label class="form-check-label" style="font-weight: 360"
-                                for="Android">Android</label>
+                                type="checkbox" id="Android" name="prog_lang[]" value="Android"
+                                @if (in_array('Android', old('prog_lang', $programming_languages))) checked @endif>
+                            <label class="form-check-label" style="font-weight: 360" for="Android">Android</label>
                         </div>
 
                         <div class="form-check form-check-inline ms-2">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="Java" name="prog_lang[]" value="2"
-                                @if (in_array(2, old('prog_lang', $progs))) checked @endif>
+                                type="checkbox" id="Java" name="prog_lang[]" value="Java"
+                                @if (in_array('Java', old('prog_lang', $programming_languages))) checked @endif>
                             <label class="form-check-label" style="font-weight: 360" for="Java">Java</label>
                         </div>
+
                         <div class="form-check form-check-inline ms-2">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="PHP" name="prog_lang[]" value="3"
-                                @if (in_array(3, old('prog_lang', $progs))) checked @endif>
+                                type="checkbox" id="PHP" name="prog_lang[]" value="PHP"
+                                @if (in_array('PHP', old('prog_lang', $programming_languages))) checked @endif>
                             <label class="form-check-label" style="font-weight: 360" for="PHP">PHP</label>
                         </div>
 
                         <div class="form-check form-check-inline ms-3">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="React" name="prog_lang[]" value="4"
-                                @if (in_array(4, old('prog_lang', $progs))) checked @endif>
+                                type="checkbox" id="React" name="prog_lang[]" value="React"
+                                @if (in_array('React', old('prog_lang', $programming_languages))) checked @endif>
                             <label class="form-check-label" style="font-weight: 360" for="React">React</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="Laravel" name="prog_lang[]" value="5"
-                                @if (in_array(5, old('prog_lang', $progs))) checked @endif>
-                            <label class="form-check-label" style="font-weight: 360"
-                                for="Laravel">Laravel</label>
+                                type="checkbox" id="Laravel" name="prog_lang[]" value="Laravel"
+                                @if (in_array('Laravel', old('prog_lang', $programming_languages))) checked @endif>
+                            <label class="form-check-label" style="font-weight: 360" for="Laravel">Laravel</label>
                         </div>
 
                         <div class="form-check form-check-inline ms-3">
                             <input class="form-check-input @if ($errors->has('prog_lang')) is-invalid @endif"
-                                type="checkbox" id="C++" name="prog_lang[]" value="6"
-                                @if (in_array(6, old('prog_lang', $progs))) checked @endif>
+                                type="checkbox" id="C++" name="prog_lang[]" value="C++"
+                                @if (in_array('C++', old('prog_lang', $programming_languages))) checked @endif>
                             <label class="form-check-label" style="font-weight: 360" for="C++">C++</label>
                         </div>
 

@@ -29,7 +29,7 @@ class Employee_projectStore extends DBTransaction
     */
 
     /**
-     * Store a newly created employees_projects and document datas into the employee_projects table and document employee_table.
+     * Store a newly created employees_projects and document datas into the employees_projects table and document employee_table.
      * @author Kaung Htet San
      * @date 28/6/2023
      * @return array => return ['status' => false, 'error' => 'Failed!'] or ['status' => true, 'error' => '']
@@ -63,7 +63,7 @@ class Employee_projectStore extends DBTransaction
         $requestStartDate = Carbon::parse($checkStartDate);
         $requestEndDate = Carbon::parse($checkEndDate);
 
-        $checkResults = DB::table('employee_projects')
+        $checkResults = DB::table('employees_projects')
             ->where('project_id', $checkProject) // 1
             ->where('employee_id', $employee_id) // 1
             ->where('start_date', '>=', Carbon::today())
@@ -76,7 +76,7 @@ class Employee_projectStore extends DBTransaction
         //dd($requestStartDate<$requestEndDate);
 
         if ($checking > 0) {
-            
+
             // I used carbon library to compare the string dates for validation
             $requestStartDate = Carbon::parse($checkStartDate);
             $requestEndDate = Carbon::parse($checkEndDate);
@@ -94,16 +94,15 @@ class Employee_projectStore extends DBTransaction
                     continue;
                 }
 
-                if($requestEndDate > $oldStartDate) {
+                if ($requestEndDate > $oldStartDate) {
                     return ['status' => false, 'error' => "Failed!"];
                 }
-
             }
         }
 
 
         // after there is no confict between dates, we get the id, we insert into the emp_prj pivot table
-        $employee_projects = DB::table('employee_projects')->insert([
+        $employees_projects = DB::table('employees_projects')->insert([
 
             "employee_id" => $employee_id,
             "project_id" => $this->request->project,
@@ -116,12 +115,11 @@ class Employee_projectStore extends DBTransaction
 
         // Store the data into document_employee_project table
 
-        if ($employee_projects) { // if employee_project table storing is success we proceed the storing data into docs_emp_prj table
+        if ($employees_projects) { // if employee_project table storing is success we proceed the storing data into docs_emp_prj table
 
-            $get_emp_prj_id = DB::table('employee_projects')->select('id')->where('employee_id', '=', $employee_id)->where('project_id', '=', $this->request->project)->where('end_date', '=', $this->request->endDate)->get();
+            $get_emp_prj_id = DB::table('employees_projects')->select('id')->where('employee_id', '=', $employee_id)->where('project_id', '=', $this->request->project)->where('end_date', '=', $this->request->endDate)->get();
 
             $emp_prj_id = $get_emp_prj_id[0]->id;
-
         } else { // if we don't we return the false array to DBTransactions
 
             return ['status' => false, 'error' => "Failed!"];
@@ -150,7 +148,7 @@ class Employee_projectStore extends DBTransaction
                 "filename" => $fileName,
                 "filesize" => $fileSize,
                 "filepath" => $filePath,
-                "employee_project_id" => $emp_prj_id,
+                "employees_projects_id" => $emp_prj_id,
                 "created_by" => Session::get('id'),
                 "updated_by" => Session::get('id'),
                 "created_at" => Carbon::now()

@@ -30,68 +30,70 @@ class EmployeesExport implements FromCollection, WithTitle, WithHeadings, Should
      * @return array => query data of employees table
      */
     public function collection()
-    {  
+    {
 
         //This process is to make the boolean conditions and run the ->when condition base on the conditions that i made and When input request are not null this step will do the work
 
-        $idNotNullAndCareerAndLevelNotZero = request()->employee_id != null && request()->career != 0 && request()->level != 0;
-        $levelAndCareerNotZero = request()->level != 0 && request()->career != 0;
+        $id_level_career_not_null = request()->employee_id && request()->career && request()->level;
 
-        $levelNotZeroAndIdNotNull = request()->level != 0 && request()->employee_id != null;
+        $level_career_not_null = request()->level && request()->career;
+        $id_level_not_null = request()->level && request()->employee_id;
+        $id_career_not_null = request()->employee_id && request()->career;
 
-        $idNotNullAndCareerNotZero = request()->employee_id != null && request()->career != 0;
-
-        $idNotNullAndLevelCareerIsZero = request()->employee_id != null && request()->career == 0 && request()->level == 0;
-
-        //dd($idNotNullAndLevelCareerIsZero);
-
-        $levelIsNotZeroAndCareerIsZero = request()->level != 0;
-        $careerIsNotZeroAndLevelIsZero = request()->career != 0;
-
+        $only_level_not_null = request()->level;
+        $only_career_not_null = request()->career;
+        $only_id_not_null = request()->employee_id && !request()->career && !request()->level;
 
         //This condition is special condition when i click search button without inputting anything, Because I made the default option's value is as zero for reasonable condition
-        $CareerAndLevelAreZeroAndIdisNull = request()->level == 0 && request()->career == 0 && request()->employee_id == null;
+        $id_level_carrer_all_null = !request()->level && !request()->career && !request()->employee_id;
 
 
         // When my 1st when condition is true it will run the query and skip all the other. If not second condition is will be check... if all of when conditions is not true ->paginate(2) will be proceed
 
-        if ($CareerAndLevelAreZeroAndIdisNull) {
+        if ($id_level_carrer_all_null) {
 
-            $employees = Employee::query()->select('id', 'employee_id', 'name', 'phone', 'email', 'nrc', 'career_id', 'level_id', 'dateOfBirth', 'address')->where('deleted_at', null)->orderBy('updated_at', 'desc')->paginate(4);
+            $employees = Employee::query()->select('id', 'employee_id', 'name', 'phone', 'email', 'nrc', 'career', 'level', 'dateOfBirth', 'address')->orderBy('updated_at', 'desc')->paginate(4);
 
-            // Map the collection and modify the career_id field and level_id field
+            // Map the collection and modify the career field and level field
             $modifiedEmployees = $employees->map(function ($employee) {
 
-                if ($employee->career_id == 1) {
-                    $employee->career_id = "Frontend";
+
+                switch ($employee->career) {
+
+                    case 'Frontend':
+                        $employee->career = "Frontend";
+                        break;
+
+                    case 'Backend':
+                        $employee->career = "Backend";
+                        break;
+
+                    case 'Fullstack':
+                        $employee->career = "Fullstack";
+                        break;
+
+                    default:
+                        $employee->career = "Mobile";
+                        break;
                 }
 
-                if ($employee->career_id == 2) {
-                    $employee->career_id = "Backend";
-                }
+                switch ($employee->level) {
 
-                if ($employee->career_id == 3) {
-                    $employee->career_id = "FullStack";
-                }
+                    case 'Beginner':
+                        $employee->level = "Beginner";
+                        break;
 
-                if ($employee->career_id == 4) {
-                    $employee->career_id = "Mobile";
-                }
+                    case 'Junior Engineer':
+                        $employee->level = "Junior Engineer";
+                        break;
 
-                if ($employee->level_id == 1) {
-                    $employee->level_id = "Beginner Engineer";
-                }
+                    case 'Engineer':
+                        $employee->level = "Engineer";
+                        break;
 
-                if ($employee->level_id == 2) {
-                    $employee->level_id = "Junior Engineer";
-                }
-
-                if ($employee->level_id == 3) {
-                    $employee->level_id = "Engineer";
-                }
-
-                if ($employee->level_id == 4) {
-                    $employee->level_id = "Senior Engineer";
+                    default:
+                        $employee->level = "Senior Engineer";
+                        break;
                 }
 
                 return $employee;
@@ -101,84 +103,90 @@ class EmployeesExport implements FromCollection, WithTitle, WithHeadings, Should
             return $modifiedEmployees;
         }
 
-        $employees = Employee::query()->select('id', 'employee_id', 'name', 'phone', 'email', 'nrc', 'career_id', 'level_id', 'dateOfBirth', 'address')->where('deleted_at', null)->orderBy('updated_at', 'desc')
+        $employees = Employee::query()->select('id', 'employee_id', 'name', 'phone', 'email', 'nrc', 'career', 'level', 'dateOfBirth', 'address')->orderBy('updated_at', 'desc')
 
-            ->when($idNotNullAndCareerAndLevelNotZero, function ($query) {
-
-                $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%')
-                    ->where('career_id', '=', request()->get('career'))
-                    ->where('level_id', '=', request()->get('level'));
-            })
-
-            ->when($levelAndCareerNotZero, function ($query) {
-
-                $query->where('level_id', '=', request()->get('level'))
-                    ->where('career_id', '=', request()->get('career'));
-            })
-
-            ->when($levelNotZeroAndIdNotNull, function ($query) {
-
-                $query->where('level_id', '=', request()->get('level'))
-                ->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%');
-            })
-
-            ->when($idNotNullAndCareerNotZero, function ($query) {
+            ->when($id_level_career_not_null, function ($query) {
 
                 $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%')
-                    ->where('career_id', '=', request()->get('career'));
+                    ->where('career', '=', request()->get('career'))
+                    ->where('level', '=', request()->get('level'));
             })
 
-            ->when($idNotNullAndLevelCareerIsZero, function ($query) {
+            ->when($level_career_not_null, function ($query) {
+
+                $query->where('level', '=', request()->get('level'))
+                    ->where('career', '=', request()->get('career'));
+            })
+
+            ->when($id_level_not_null, function ($query) {
+
+                $query->where('level', '=', request()->get('level'))
+                    ->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%');
+            })
+
+            ->when($id_career_not_null, function ($query) {
+
+                $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%')
+                    ->where('career', '=', request()->get('career'));
+            })
+
+            ->when($only_level_not_null, function ($query) {
 
                 $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%');
             })
 
-            ->when($levelIsNotZeroAndCareerIsZero, function ($query) {
+            ->when($only_career_not_null, function ($query) {
 
-                $query->where('level_id', '=', request()->get('level'));
+                $query->where('level', '=', request()->get('level'));
             })
 
-            ->when($careerIsNotZeroAndLevelIsZero, function ($query) {
+            ->when($only_id_not_null, function ($query) {
 
-                $query->where('career_id', '=', request()->get('career'));
+                $query->where('career', '=', request()->get('career'));
             })
 
             // if all of conditions above are wrong, this parigante will do the job..
-            ->paginate(4);
+            ->paginate(2);
 
-        // Map the collection and modify the career_id field and level_id field
+        // Map the collection and modify the career field and level field
         $modifiedEmployees = $employees->map(function ($employee) {
 
-            if ($employee->career_id == 1) {
-                $employee->career_id = "Frontend";
+            switch ($employee->career) {
+
+                case 'Frontend':
+                    $employee->career = "Frontend";
+                    break;
+
+                case 'Backend':
+                    $employee->career = "Backend";
+                    break;
+
+                case 'Fullstack':
+                    $employee->career = "Fullstack";
+                    break;
+
+                default:
+                    $employee->career = "Mobile";
+                    break;
             }
 
-            if ($employee->career_id == 2) {
-                $employee->career_id = "Backend";
-            }
+            switch ($employee->level) {
 
-            if ($employee->career_id == 3) {
-                $employee->career_id = "FullStack";
-            }
+                case 'Beginner':
+                    $employee->level = "Beginner";
+                    break;
 
-            if ($employee->career_id == 4) {
-                $employee->career_id = "Mobile";
-            }
+                case 'Junior Engineer':
+                    $employee->level = "Junior Engineer";
+                    break;
 
-            if ($employee->level_id == 1) {
-                $employee->level_id = "Beginner Engineer";
-            }
+                case 'Engineer':
+                    $employee->level = "Engineer";
+                    break;
 
-            if ($employee->level_id == 2) {
-                $employee->level_id = "Junior Engineer";
-            }
-
-            if ($employee->level_id == 3) {
-                $employee->level_id = "Engineer";
-            }
-
-            if ($employee->level_id == 4) {
-                $employee->level_id = "Senior Engineer";
+                default:
+                    $employee->level = "Senior Engineer";
+                    break;
             }
 
             return $employee;
@@ -186,74 +194,56 @@ class EmployeesExport implements FromCollection, WithTitle, WithHeadings, Should
 
         //dd($modifiedEmployees);
         return $modifiedEmployees;
-
-
-        //return $employees;
-
-        /*
-        Old php pure style to paginate..
-
-        // $limit = 3;
-
-        // $page = request()->has('page') ? request()->input('page') : 1;
-
-        // $start = ($page - 1) * $limit;
-
-        // $employees = DB::table('employees')->skip($start)->limit($limit)->get();
-
-        //return $employees;
-
-        */
     }
 
 
     //Codes below are for excel sheet styles
     public function styles(Worksheet $sheet)
-{
-    // For Excel Column title background color and border
-    $sheet->getStyle('A1:J1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('a4c639');
-    $sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    {
+        // For Excel Column title background color and border
+        $sheet->getStyle('A1:J1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('a4c639');
+        $sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-    // To make title texts in center vertically and horizontally
-    $style = $sheet->getStyle('A1:J1');
-    $style->getAlignment()
-        ->setHorizontal(Alignment::HORIZONTAL_CENTER)
-        ->setVertical(Alignment::VERTICAL_CENTER);
-    $sheet->getRowDimension(1)->setRowHeight(20);
+        // To make title texts in center vertically and horizontally
+        $style = $sheet->getStyle('A1:J1');
+        $style->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+            ->setVertical(Alignment::VERTICAL_CENTER);
+        $sheet->getRowDimension(1)->setRowHeight(20);
 
-    // To make table rows data in center vertically and horizontally
-    $dataStyle = $sheet->getStyle('A2:J' . $sheet->getHighestRow());
-    $dataStyle->getAlignment()
-        ->setHorizontal(Alignment::HORIZONTAL_CENTER)
-        ->setVertical(Alignment::VERTICAL_CENTER);
+        // To make table rows data in center vertically and horizontally
+        $dataStyle = $sheet->getStyle('A2:J' . $sheet->getHighestRow());
+        $dataStyle->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+            ->setVertical(Alignment::VERTICAL_CENTER);
 
-    // Add borders to the table rows
-    $borderStyle = [
-        'borders' => [
-            'outline' => [
-                'borderStyle' => Border::BORDER_THIN,
-                'color' => ['argb' => '000000'],
+        // Add borders to the table rows
+        $borderStyle = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
             ],
-        ],
-    ];
-    $sheet->getStyle('A2:J' . $sheet->getHighestRow())->applyFromArray($borderStyle);
+        ];
+        $sheet->getStyle('A2:J' . $sheet->getHighestRow())->applyFromArray($borderStyle);
 
-    // Title font
-    $font = $style->getFont();
-    $font->setBold(true);
+        // Title font
+        $font = $style->getFont();
+        $font->setBold(true);
 
-    // Column border
-    $columnBorder = [
-        'borders' => [
-            'outline' => [
-                'borderStyle' => Border::BORDER_THIN,
-                'color' => ['argb' => '000000'],
+        // Column border
+        $columnBorder = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
             ],
-        ],
-    ];
-    
-    $sheet->getStyle('A2:J' . $sheet->getHighestRow())->applyFromArray($columnBorder);
-}
+        ];
+
+        $sheet->getStyle('A2:J' . $sheet->getHighestRow())->applyFromArray($columnBorder);
+    }
 
 
 

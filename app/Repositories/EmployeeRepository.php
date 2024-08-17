@@ -19,69 +19,66 @@ class EmployeeRepository implements EmployeeInterface
     {
         //This process is to make the boolean conditions and run the ->when condition base on the conditions that i made and When input request are not null this step will do the work
 
-        $idNotNullAndCareerAndLevelNotZero = request()->employee_id != null && request()->career != 0 && request()->level != 0;
-        $levelAndCareerNotZero = request()->level != 0 && request()->career != 0;
+        $id_level_career_not_null = request()->employee_id && request()->career && request()->level;
 
-        $levelNotZeroAndIdNotNull = request()->level != 0 && request()->employee_id != null;
+        $level_career_not_null = request()->level && request()->career;
+        $id_level_not_null = request()->level && request()->employee_id;
+        $id_career_not_null = request()->employee_id && request()->career;
 
-        $idNotNullAndCareerNotZero = request()->employee_id != null && request()->career != 0;
-
-        $idNotNullAndLevelCareerIsZero = request()->employee_id != null && request()->career == 0 && request()->level == 0;
-
-        $levelIsNotZeroAndCareerIsZero = request()->level != 0;
-        $careerIsNotZeroAndLevelIsZero = request()->career != 0;
+        $only_level_not_null = request()->level;
+        $only_career_not_null = request()->career;
+        $only_id_not_null = request()->employee_id && !request()->career && !request()->level;
 
 
         $employees = DB::table('employees')->orderBy('updated_at', 'desc')
 
-            ->when($idNotNullAndCareerAndLevelNotZero, function ($query) {
+            ->when($id_level_career_not_null, function ($query) {
 
-                $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%')
-                    ->where('career_id', '=', request()->get('career'))
-                    ->where('level_id', '=', request()->get('level'));
+                $query->where('employee_id', 'LIKE', '%' . request()->employee_id . '%')
+                    ->where('level', '=', request()->level)
+                    ->where('career', '=', request()->career);
             })
 
-            ->when($levelAndCareerNotZero, function ($query) {
-
-                $query->where('level_id', '=', request()->get('level'))
-                    ->where('career_id', '=', request()->get('career'));
+            ->when($level_career_not_null, function ($query) {
+                $query->where('level', '=', request()->level)
+                    ->where('career', '=', request()->career);
             })
 
-            ->when($levelNotZeroAndIdNotNull, function ($query) {
+            ->when($id_level_not_null, function ($query) {
 
-                $query->where('level_id', '=', request()->get('level'))
-                    ->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%');
+                $query->where('employee_id', 'LIKE', '%' . request()->employee_id . '%')
+                    ->where('level', '=', request()->level);
             })
 
-            ->when($idNotNullAndCareerNotZero, function ($query) {
+            ->when($id_career_not_null, function ($query) {
 
-                $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%')
-                    ->where('career_id', '=', request()->get('career'));
+                $query->where('employee_id', 'LIKE', '%' . request()->employee_id . '%')
+                    ->where('career', '=', request()->career);
             })
 
-            ->when($idNotNullAndLevelCareerIsZero, function ($query) {
+            ->when($only_id_not_null, function ($query) {
 
-                $query->where('employee_id', 'LIKE', '%' . request()->get('employee_id') . '%');
+                $query->where('employee_id', 'LIKE', '%' . request()->employee_id . '%');
             })
 
-            ->when($levelIsNotZeroAndCareerIsZero, function ($query) {
+            ->when($only_level_not_null, function ($query) {
 
-                $query->where('level_id', '=', request()->get('level'));
+                $query->where('level', '=', request()->level);
             })
 
-            ->when($careerIsNotZeroAndLevelIsZero, function ($query) {
+            ->when($only_career_not_null, function ($query) {
 
-                $query->where('career_id', '=', request()->get('career'));
+                $query->where('career', '=', request()->career);
             })
 
             // if all of conditions above are wrong, this parigante will do the job..
-            ->paginate(4);
+            ->paginate(2);
 
         // need to appends the query string datas to get the paginate data succefully
         $employees->appends([
-            'employee_id' => request()->get('employee_id'),
-            'career' => request()->get('career'),
-            'level' => request()->get('level'),
+            'employee_id' => request()->employee_id,
+            'career' => request()->career,
+            'level' => request()->glevel,
         ]);
 
         return $employees;

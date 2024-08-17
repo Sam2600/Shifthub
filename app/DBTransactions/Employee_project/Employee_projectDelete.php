@@ -22,7 +22,7 @@ class Employee_projectDelete extends DBTransaction
     public function process()
     {
         // 1st we have to make sure that there is no employees that is connected with this project
-        $projects = DB::table('employee_projects')->where('project_id', $this->request->project)->where('deleted_at', NULL)->get()->toArray();
+        $projects = DB::table('employees_projects')->where('project_id', $this->request->project)->get()->toArray();
 
 
         if (count($projects) > 0) {
@@ -32,9 +32,9 @@ class Employee_projectDelete extends DBTransaction
         }
 
         // if the count is zero that means there is no employees that is working with that project name
-        DB::table('employee_projects')->where('project_id', $this->request->project)->update(['deleted_at' => now()]);
-
         DB::table('projects')->where('id', $this->request->project)->delete();
+
+        DB::table('employees_projects')->where('project_id', $this->request->project)->delete();
 
         return ['status' => true, 'error' => ''];
     }

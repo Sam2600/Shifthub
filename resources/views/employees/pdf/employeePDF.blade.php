@@ -74,25 +74,9 @@
                     <td>{{ $employee->email }}</td>
                     <td>{{ $employee->nrc }}</td>
 
-                    @if ($employee->career_id === 1)
-                        <td>FrontEnd</td>
-                    @elseif ($employee->career_id === 2)
-                        <td>BackEnd</td>
-                    @elseif ($employee->career_id === 3)
-                        <td>FullStack</td>
-                    @else
-                        <td>Mobile</td>
-                    @endif
+                    <td>{{ $employee->career }}</td>
 
-                    @if ($employee->level_id === 1)
-                        <td>Beginner Engineer</td>
-                    @elseif ($employee->level_id === 2)
-                        <td>Junior Engineer</td>
-                    @elseif ($employee->level_id === 3)
-                        <td>Engineer</td>
-                    @else
-                        <td>Senior Engineer</td>
-                    @endif
+                    <td>{{ $employee->level }}</td>
 
                     <td>{{ $employee->dateOfBirth }}</td>
                     <td>{{ $employee->address }}</td>
@@ -100,10 +84,6 @@
             @endforeach
         </tbody>
     </table>
-
-    <script src="{{ URL::asset('js/popper.js') }}"></script>
-    <script src="{{ URL::asset('js/bootstrap.js') }}"></script>
-    <script src="{{ URL::asset('js/jquery.js') }}"></script>
 
 </body>
 

@@ -25,9 +25,7 @@ use App\Http\Controllers\LanguageController;
 // admin id => 1 , password => admin123123 => if admin id is 1, cannot update will raise error
 // admin id => 2 , password => admin456456 => if admin id is 2, cannot create will raise error
 
-Route::get('/', function() {
-    return redirect('admins/login');
-});
+Route::view('/', 'login');
 
 Route::prefix('admins')->group(function () {
 
@@ -42,7 +40,7 @@ Route::prefix('admins')->group(function () {
 Route::prefix('employees')->middleware('admin')->group(function () {
 
     // localization
-    Route::get('language/{locale}', [LanguageController::class,'changelanguage'])->name('set.language');
+    Route::get('language/{locale}', [LanguageController::class, 'changelanguage'])->name('set.language');
 
     // Employees CRUD
     Route::get('', [EmployeeController::class, 'index'])->name('employees.index');
@@ -54,7 +52,7 @@ Route::prefix('employees')->middleware('admin')->group(function () {
     Route::get('/{id}', [EmployeeController::class, 'show'])->name('employees.view');
     Route::delete('/{id}', [EmployeeController::class, 'destroy'])->name('employees.delete');
 
-    // Employee_projects's document download
+    // employees_projects's document download
     Route::get('/documents/{id}/download', [DocumentationController::class, 'downloadDocs'])->name('employees.downloadDocument');
     Route::get('/projects/{id}/show', [DocumentationController::class, 'showProjects'])->name('employees.projectsShow');
     Route::get('/projects/{id}/download', [DocumentationController::class, 'projectIndividualDocDownload'])->name('employees.projects.individualDownload');

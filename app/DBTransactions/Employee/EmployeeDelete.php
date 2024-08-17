@@ -24,11 +24,11 @@ class EmployeeDelete extends DBTransaction
     }
 
     public function process()
-    {   
-        
+    {
+
         $employee = Employee::find($this->id);
 
-       
+
         // check if there is row data or not
 
         if (!$employee) { //if there is no.. we return false array
@@ -43,10 +43,10 @@ class EmployeeDelete extends DBTransaction
         }
 
         // This process is to delete the employee's programming languages
-        DB::table('employees_programming_languages')->where('employee_id', '=', $this->id)->update(['deleted_at' => now()]);
+        DB::table('employees_programming_languages')->where('employee_id', '=', $this->id)->delete();
 
-        // This process is to check and delete the employee_projects table's rows
-        $results = DB::table('employee_projects')->where('employee_id', "=", $this->id)->get();
+        // This process is to check and delete the employees_projects table's rows
+        $results = DB::table('employees_projects')->where('employee_id', "=", $this->id)->get();
 
         // And we will make sure that the employee we want to delete gets the documents or not. Even though this step is unecessary. I will make sure for it.
         if (count($results) > 0) { // it means there is employees with that id so we delete it
@@ -63,8 +63,7 @@ class EmployeeDelete extends DBTransaction
             foreach ($ids as $id) {
 
                 // Now we delete the emplolyee_projects table's data that is connected with that employee
-                DB::table('employee_projects')->where('id', "=", $id)->update(['deleted_at' => now()]);
-
+                DB::table('employees_projects')->where('id', "=", $id)->delete();
             }
 
             $resultArrays = [];
@@ -84,7 +83,7 @@ class EmployeeDelete extends DBTransaction
 
                 foreach ($ids as $id) {
                     // this step is to also delete the employee's project documents that is founded from line 47
-                    DB::table('documents_emp_projects')->where('employee_project_id', "=", $id)->update(['deleted_at' => now()]);
+                    DB::table('documents_emp_projects')->where('employee_project_id', "=", $id)->delete();
                 }
 
                 // we loop it

@@ -26,7 +26,7 @@ class CreateEmployeesTable extends Migration
                 $table->string('gender', 10);
                 $table->string('dateOfBirth', 50);
                 $table->string('address', 255);
-                $table->string('programming_languages', 20);
+                $table->string('programming_languages', 100);
                 $table->string('languages', 20);
                 $table->string('career', 25);
                 $table->string('level', 25);

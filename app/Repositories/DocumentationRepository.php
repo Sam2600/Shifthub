@@ -18,7 +18,7 @@ class DocumentationRepository implements DocumentationInterface
 
     public function getFilenameOfDocumentEmpProjectTableByEmployeeProjectId($id)
     {
-        return DB::table('documents_emp_projects')->select('filename')->where('employee_project_id', $id)->get();
+        return DB::table('documents_emp_projects')->select('filename')->where('employees_projects_id', $id)->get();
     }
 
 
@@ -32,8 +32,8 @@ class DocumentationRepository implements DocumentationInterface
     public function getFilenameOfDocumentEmpProjectTableById($id)
     {
         return DB::table('documents_emp_projects')
-            ->join('employee_projects', 'employee_projects.id', 'documents_emp_projects.employee_project_id')
-            ->join('employees', 'employees.id', 'employee_projects.employee_id')
+            ->join('employees_projects', 'employees_projects.id', 'documents_emp_projects.employees_projects_id')
+            ->join('employees', 'employees.id', 'employees_projects.employee_id')
             ->select('documents_emp_projects.filename', 'employees.employee_id')
             ->where('documents_emp_projects.id', $id)->get();
     }
@@ -48,14 +48,13 @@ class DocumentationRepository implements DocumentationInterface
     public function getTableJoinedQueryByEmployeeId($id)
     {
         return DB::table("documents_emp_projects")
-            ->join("employee_projects", "employee_projects.id", "documents_emp_projects.employee_project_id")
-            ->join("employees", "employees.id", "employee_projects.employee_id")
-            ->join("projects", "projects.id", "employee_projects.project_id")
+            ->join("employees_projects", "employees_projects.id", "documents_emp_projects.employees_projects_id")
+            ->join("employees", "employees.id", "employees_projects.employee_id")
+            ->join("projects", "projects.id", "employees_projects.project_id")
 
-            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employee_projects.start_date", "employee_projects.end_date", "employees.employee_id")
+            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employees_projects.start_date", "employees_projects.end_date", "employees.employee_id")
 
             ->where("employees.id", $id)
-            ->where('documents_emp_projects.deleted_at', NULL)
             ->get();
     }
 
@@ -69,16 +68,15 @@ class DocumentationRepository implements DocumentationInterface
     public function getTableJoinedQueryByEmployeeIdAndTodayDate($id, $todayDate) // where start_date <= today date and end date >= today date
     {
         return DB::table("documents_emp_projects")
-            ->join("employee_projects", "employee_projects.id", "documents_emp_projects.employee_project_id")
-            ->join("employees", "employees.id", "employee_projects.employee_id")
-            ->join("projects", "projects.id", "employee_projects.project_id")
+            ->join("employees_projects", "employees_projects.id", "documents_emp_projects.employees_projects_id")
+            ->join("employees", "employees.id", "employees_projects.employee_id")
+            ->join("projects", "projects.id", "employees_projects.project_id")
 
-            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employee_projects.start_date", "employee_projects.end_date", "employees.employee_id")
+            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employees_projects.start_date", "employees_projects.end_date", "employees.employee_id")
 
             ->where("employees.id", $id)
-            ->whereDate("employee_projects.start_date", "<=", $todayDate)
-            ->whereDate("employee_projects.end_date", ">=", $todayDate)
-            ->where('documents_emp_projects.deleted_at', NULL)
+            ->whereDate("employees_projects.start_date", "<=", $todayDate)
+            ->whereDate("employees_projects.end_date", ">=", $todayDate)
             ->get();
     }
 
@@ -92,15 +90,14 @@ class DocumentationRepository implements DocumentationInterface
     public function getTableJoinedQueryByEmployeeIdAndTodayDateIsgreaterThanStartDate($id, $todayDate)
     {
         return DB::table("documents_emp_projects")
-            ->join("employee_projects", "employee_projects.id", "documents_emp_projects.employee_project_id")
-            ->join("employees", "employees.id", "employee_projects.employee_id")
-            ->join("projects", "projects.id", "employee_projects.project_id")
+            ->join("employees_projects", "employees_projects.id", "documents_emp_projects.employees_projects_id")
+            ->join("employees", "employees.id", "employees_projects.employee_id")
+            ->join("projects", "projects.id", "employees_projects.project_id")
 
-            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employee_projects.start_date", "employee_projects.end_date", "employees.employee_id")
+            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employees_projects.start_date", "employees_projects.end_date", "employees.employee_id")
 
             ->where("employees.id", $id)
-            ->where("employee_projects.start_date", ">", $todayDate)
-            ->where('documents_emp_projects.deleted_at', NULL)
+            ->where("employees_projects.start_date", ">", $todayDate)
             ->get();
     }
 
@@ -114,15 +111,14 @@ class DocumentationRepository implements DocumentationInterface
     public function getTableJoinedQueryByEmployeeIdAndTodayDateIsLessThanStartDate($id, $todayDate)
     {
         return DB::table("documents_emp_projects")
-            ->join("employee_projects", "employee_projects.id", "documents_emp_projects.employee_project_id")
-            ->join("employees", "employees.id", "employee_projects.employee_id")
-            ->join("projects", "projects.id", "employee_projects.project_id")
+            ->join("employees_projects", "employees_projects.id", "documents_emp_projects.employees_projects_id")
+            ->join("employees", "employees.id", "employees_projects.employee_id")
+            ->join("projects", "projects.id", "employees_projects.project_id")
 
-            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employee_projects.start_date", "employee_projects.end_date", "employees.employee_id")
+            ->select("documents_emp_projects.id", "documents_emp_projects.filename", "projects.name", "employees_projects.start_date", "employees_projects.end_date", "employees.employee_id")
 
             ->where("employees.id", $id)
-            ->where("employee_projects.end_date", "<", $todayDate)
-            ->where('documents_emp_projects.deleted_at', NULL)
+            ->where("employees_projects.end_date", "<", $todayDate)
             ->get();
     }
 }

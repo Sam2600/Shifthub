@@ -23,8 +23,6 @@ class ProjectStore extends DBTransaction
         $count = count($checkProject);
 
         if($count != 0) {
-
-            //Session::put("projectDuplicate", "Projects cannot be duplicated");
             return ['status' => false, 'error' => "Projects cannot be duplicated"];
         }
 
