@@ -28,8 +28,7 @@
                                     <!-- Profile picture help block-->
                                     <div class="small font-italic text-muted mb-4"> <label for="">Employee ID :
                                             {{ $employee->employee_id }}</label> </div>
-
-                                    <a class="btn create" href="{{ route('employees.index', ['page' => $page]) }}">
+                                    <a class="btn create" href="{{ $previous_url }}">
                                         Back to index
                                     </a>
                                 </div>

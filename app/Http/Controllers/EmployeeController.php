@@ -14,7 +14,6 @@ use App\Http\Requests\EmployeeRegisterRequest;
 use App\DBTransactions\Employee\EmployeeStore;
 use App\DBTransactions\Employee\EmployeeDelete;
 use App\DBTransactions\Employee\EmployeeUpdate;
-use Illuminate\Queue\Jobs\RedisJob;
 
 class EmployeeController extends Controller
 {
@@ -138,14 +137,13 @@ class EmployeeController extends Controller
 	public function show($id)
 	{
 
-		$currentPage = Session::get('currentPage') ? Session::get('currentPage') : 1;
+		$previous_url = url()->previous();
 
 		// get the employee's data with the param $id
 		$employee = $this->employeeInterface->getEmployeeById($id);
 
 		if ($employee) {
-
-			return view('employees.detail', ["employee" => $employee, "page" => $currentPage]);
+			return view('employees.detail', ["employee" => $employee, "previous_url" => $previous_url]);
 		}
 
 		return redirect()->back()->with("noEmployeeMessage", "There is no employee with that Id");
@@ -161,6 +159,13 @@ class EmployeeController extends Controller
 	 */
 	public function edit($id)
 	{
+
+		/**
+		 * @info Check if session still not exists, we create it
+		 */
+		if (!Session::get("previous_url")) {
+			Session::put("previous_url", url()->previous());
+		}
 
 		//if admin login ID is = 2 we redirect back with error message
 		if (Session::get('id') == 1) {
@@ -190,6 +195,12 @@ class EmployeeController extends Controller
 	public function update(EmployeeUpdateRequest $request, $id)
 	{
 
+		/**
+		 * @info get session value and destroy immdiately
+		 */
+		$previous_url = Session::get("previous_url");
+		Session::remove("previous_url");
+
 		$employee = $this->employeeInterface->getEmployeeById($id);
 
 		if ($employee) { // if true we are good to go
@@ -201,7 +212,7 @@ class EmployeeController extends Controller
 
 			if ($result) { // if true we good to go
 
-				return redirect()->route('employees.index')->with('updateMessage', "Employee Id $id is updated successfully");
+				return redirect($previous_url)->with('updateMessage', "Employee Id $id is updated successfully");
 			}
 			// if not we go back with error message
 
@@ -221,9 +232,6 @@ class EmployeeController extends Controller
 	 */
 	public function destroy($id)
 	{
-		// This process is to pass employee_id to the index page
-		session()->put('emp_id', $id);
-
 		// get the employee's data with the param $id
 		$employee = $this->employeeInterface->getEmployeeById($id);
 
@@ -236,7 +244,7 @@ class EmployeeController extends Controller
 
 			if ($result) { // if true we good to go
 
-				return redirect()->back()->with('deleteMessage', "Employee id $id is removed.");
+				return redirect()->back()->with("noEmployeeMessage", "There is no employee with that Id");
 			}
 
 			// if not we go back with error message
