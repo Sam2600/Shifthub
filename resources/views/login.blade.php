@@ -59,8 +59,8 @@
                         <input type="password"
                             class="shadow form-control @if ($errors->has('password')) is-invalid @endif" id="password"
                             name="password" value="{{ old('password') }}">
-                        <button type="button" id="toggle-password" class="btn shadow btn-dark"><i
-                                class="far fa-eye"></i></button>
+                        <button type="button" id="toggle-password" class="btn shadow btn-dark"><i id="eyeIcon"
+                                class="material-icons">visibility</i></button>
                     </div>
                     @error('password')
                         <div id="passwordHelp" class="form-text text-danger">{{ $errors->first('password') }}</div>
@@ -88,14 +88,19 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
         var togglePassword = document.getElementById('toggle-password');
         var passwordField = document.getElementById('password');
+        
+        var eyeIcon = document.getElementById('eyeIcon');
 
         togglePassword.addEventListener('click', function() {
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
+                eyeIcon.innerText  = 'visibility_off';
             } else {
                 passwordField.type = 'password';
+                eyeIcon.innerText  = 'visibility';
             }
         });
     });

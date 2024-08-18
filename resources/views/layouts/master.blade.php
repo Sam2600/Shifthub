@@ -11,10 +11,6 @@
     <link rel="stylesheet" href="{{ URL::asset('css/material-icon.css') }}">
     {{-- fav icon --}}
     <link rel="icon" href="{{ URL::asset('images/shifthub.png') }}" type="image/png">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ URL::asset('css/font-awsome.css') }}">
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="{{ URL::asset('css/google-font.css') }}">
     {{-- My Custom Css --}}
     <link rel="stylesheet" href="{{ URL::asset('css/shifthub.css') }}">
     {{-- laravel ajax --}}
