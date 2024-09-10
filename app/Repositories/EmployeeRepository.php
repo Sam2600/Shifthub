@@ -72,7 +72,7 @@ class EmployeeRepository implements EmployeeInterface
             })
 
             // if all of conditions above are wrong, this parigante will do the job..
-            ->paginate(2);
+            ->paginate(4);
 
         // need to appends the query string datas to get the paginate data succefully
         $employees->appends([
