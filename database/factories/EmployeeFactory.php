@@ -68,7 +68,7 @@ class EmployeeFactory extends Factory
             'languages' => $this->faker->randomElement(["Japan", "English"]),
             'career' => $this->faker->randomElement(["Frontend", "Backend", "Fullstack", "Mobile"]),
             'level' => $this->faker->randomElement(["Beginner", "Junior Engineer", "Engineer", "Senior Engineer"]),
-            'photo' => $this->faker->file("C:\Users\USER\OneDrive\Pictures\Shopping Dummies Photos", "public\storage\\employees\photos", false),
+            'photo' => '',
             'created_by' => $this->faker->numberBetween(1, 2),
             'updated_by' => $this->faker->numberBetween(1, 2),
         ];
