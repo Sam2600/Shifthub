@@ -210,3 +210,34 @@ i {
 .lang_button:focus {
     outline: none;
 }
+
+.pagination > .page-item > .page-link {
+    color: #000080;
+}
+
+.pagination > .page-item > .page-link:hover {
+    color: white;
+    background-color: #000080;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: white;
+    background-color: #000080;
+    border-color: #000080;
+}
+
+.dropdown-menu.show .dropdown-item:focus {
+    background-color: #000080;
+}
+
+#projectAssignButton {
+    color: #000080;
+}
+
+#projectAssignButton:hover {
+    color: white;
+    border-color: #000080;
+    background-color: #000080;
+}
+
