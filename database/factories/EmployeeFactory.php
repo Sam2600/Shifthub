@@ -63,7 +63,7 @@ class EmployeeFactory extends Factory
             'email' => $this->faker->safeEmail(),
             'gender' => $this->faker->randomElement(["male", "female"]),
             'dateOfBirth' => $this->faker->date(),
-            'address' => $this->faker->paragraph(),
+            'address' => $this->faker->address(),
             'programming_languages' => $this->faker->randomElement(["Android", "Java", "PHP", "React", "Laravel", "C++"]),
             'languages' => $this->faker->randomElement(["Japan", "English"]),
             'career' => $this->faker->randomElement(["Frontend", "Backend", "Fullstack", "Mobile"]),
