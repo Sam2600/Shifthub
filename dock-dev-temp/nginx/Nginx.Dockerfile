@@ -1,0 +1,2 @@
+ARG NGINX_VERSION=1.25.2
+FROM nginx:${NGINX_VERSION} as nginx
