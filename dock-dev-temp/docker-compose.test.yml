@@ -1,3 +1,4 @@
+# docker-compose -f docker-compose.test.yml -p "shifthub"  up --build
 services:
   nginx:
     image: "${NGINX_PUSHED_IMG}"

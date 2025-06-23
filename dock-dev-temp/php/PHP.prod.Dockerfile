@@ -14,7 +14,7 @@ RUN apt-get update && \
         zlib1g-dev \
         libcurl4-openssl-dev \
         libpq-dev && \
-    docker-php-ext-install intl curl fileinfo gettext mbstring exif pdo_pgsql pgsql zip && \
+    docker-php-ext-install intl curl fileinfo gettext mbstring exif pdo_mysql pdo_pgsql pgsql zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
