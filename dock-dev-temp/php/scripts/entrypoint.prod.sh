@@ -18,6 +18,7 @@ fi
 
 # php artisan migrate
 php artisan optimize:clear
+php artisan storage:link
 
 # Only run migrate:fresh --seed if explicitly enabled
 if [ "$RUN_SEED" = "true" ]; then
@@ -30,4 +31,4 @@ else
    echo "Skipping migrations and seeding."
 fi
 
-exec php-fpm
+exec php-fpm -F
