@@ -33,7 +33,7 @@ services:
     image: "${PRJ_NAME}/php:prod"
     container_name: php
     environment:
-      - RUN_SEED=true
+      - RUN_SEED=false
       - HEALTH_CHK=false
       - HEALTH_SERVER=${HEALTH_SERVER}
       - HEALTH_PORT=${HEALTH_PORT}
