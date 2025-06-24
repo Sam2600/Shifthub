@@ -1,4 +1,3 @@
-# docker-compose -f docker-compose.test.yml -p "shifthub"  up --build
 services:
   nginx:
     image: "${NGINX_PUSHED_IMG}"
@@ -11,17 +10,38 @@ services:
       - app-network
     depends_on:
       - php
+      - mysql
 
   php:
     image: "${PHP_PUSHED_IMG}"
     container_name: php
     environment:
-      - RUN_SEED=false
+      - RUN_SEED=true
     expose:
       - "9000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: "${MYSQL_PUSHED_IMG}"
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_HOST_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    container_name: mysql
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  db_data:

@@ -21,7 +21,21 @@ php artisan optimize:clear
 php artisan storage:link
 
 # Only run migrate:fresh --seed if explicitly enabled
-if [ "$RUN_SEED" = "true" ]; then
+if [ "$RUN_SEED" = "true" ] && [ "$HEALTH_CHK" = "true" ]; then
+
+   if [ -z "$HEALTH_SERVER" ] || [ -z "$HEALTH_PORT" ]; then
+      echo "Error: HEALTH_SERVER and HEALTH_PORT environment variables must be set."
+      exit 1
+   fi
+
+   echo "Waiting for Database Server to be ready..."
+
+   until nc -z -v -w30 "${HEALTH_SERVER}" "${HEALTH_PORT}"; do
+      echo "⏳ Waiting for Database Server..."
+      sleep 3
+   done
+
+   echo "✅ Database Server is ready! Continuing..."
 
    echo "Running migrations and seeding the database..."
 
@@ -31,4 +45,4 @@ else
    echo "Skipping migrations and seeding."
 fi
 
-exec php-fpm -F
+exec php-fpm

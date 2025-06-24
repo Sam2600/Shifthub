@@ -22,11 +22,8 @@ php artisan storage:link
 
 # Only run migrate:fresh --seed if explicitly enabled
 if [ "$RUN_SEED" = "true" ]; then
-
    echo "Running migrations and seeding the database..."
-
    php artisan migrate:fresh --seed
-   
 else
    echo "Skipping migrations and seeding."
 fi

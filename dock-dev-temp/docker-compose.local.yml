@@ -1,4 +1,4 @@
-# docker-compose -f docker-compose.local.yml -p "shifthub"  up --build
+# docker-compose -f docker-compose.local.yml -p "your_prj_name" up --build
 services:
   nginx:
     build:
@@ -7,7 +7,7 @@ services:
       args:
         - NGINX_VERSION=${NGINX_VERSION}
     image: "${PRJ_NAME}/nginx:dev"
-    container_name: "nginx"
+    container_name: nginx
     volumes:
       - "../:${APP_CODE_PATH_CONTAINER}"
       - "${NGINX_SITES_PATH}:/etc/nginx/conf.d"
@@ -17,6 +17,7 @@ services:
       - "${NGINX_HOST_HTTPS_PORT}:443"
     depends_on:
       - php
+      - mysql
     networks:
       - app-network
 
@@ -30,15 +31,40 @@ services:
         - WORKDIR=${APP_CODE_PATH_CONTAINER}
         - PRJ_NAME=${PRJ_NAME}
     image: "${PRJ_NAME}/php:dev"
-    container_name: "php"
+    container_name: php
     environment:
-      - RUN_SEED=false
+      - RUN_SEED=true
     expose:
       - "9000" # Expose port for PHP-FPM
     volumes:
       - "../:${APP_CODE_PATH_CONTAINER}"
+    depends_on:
+      - mysql
     networks:
       - app-network
+
+  mysql:
+    build:
+      context: ./mysql/
+      dockerfile: MySQL.Dockerfile
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
+    image: "${PRJ_NAME}/mysql:dev"
+    container_name: mysql
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_HOST_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  db_data:
 
 networks:
   app-network:
